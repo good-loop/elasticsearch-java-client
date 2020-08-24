@@ -51,4 +51,6 @@ public interface SearchResponse extends IESResponse {
 	 */
 	List<Map> getSuggesterHits(String name);
 
+	<X> List<ESHit<X>> getHits(Class<? extends X> type);
+
 }

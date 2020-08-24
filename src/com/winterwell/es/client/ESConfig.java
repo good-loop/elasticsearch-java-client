@@ -9,7 +9,10 @@ import com.winterwell.utils.time.Time;
 
 public class ESConfig {
 
-	public static final String CLIENT_VERSION = "0.9";
+	/**
+	 * What version of ESJC is this?
+	 */
+	public static final String CLIENT_VERSION = "1.0.0";
 	public static final String ES_SUPPORTED_VERSION = "7.0";
 	
 	/**

@@ -25,4 +25,6 @@ public class SearchRequestBuilderTest extends ESTest  {
 		assert hits.size() == 6 : hits.size();
 	}
 
+	
+
 }
