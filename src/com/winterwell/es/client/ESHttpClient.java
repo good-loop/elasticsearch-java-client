@@ -201,6 +201,15 @@ public class ESHttpClient implements Flushable {
 		return prepareIndex(new ESPath(index, type, id));
 	}
 	
+	/**
+	 * Prepare to index (aka store or insert) a document!
+	 * @param index
+	 * @param id
+	 * @return an IndexRequestBuilder Typical usage: call setBodyDoc(), then get()
+	 */
+	public IndexRequestBuilder prepareIndex(String index, String id) {
+		return prepareIndex(new ESPath(index, id));
+	}
 
 	public DeleteRequestBuilder prepareDelete(String esIndex, String esType, String id) {
 		com.winterwell.es.client.DeleteRequestBuilder drb = new DeleteRequestBuilder(this);

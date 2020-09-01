@@ -97,7 +97,7 @@ public class BulkRequestBuilderTest extends ESTest {
 		List<String> ids = new ArrayList();
 		BulkRequestBuilder bulk = esc.prepareBulk();
 		for(int i=0; i<100; i++) {
-			IndexRequestBuilder pi = esc.prepareIndex(INDEX, "simple", "s_"+i);			
+			IndexRequestBuilder pi = esc.prepareIndex(INDEX, "_doc", "s_"+i);			
 			pi.setBodyMap(new ArrayMap("k", ""+i));
 			bulk.add(pi);
 			ids.add("s_"+i);
@@ -107,7 +107,7 @@ public class BulkRequestBuilderTest extends ESTest {
 		BulkResponse br = bulk.get();
 		assert ! br.hasErrors() : br.getError();
 		
-		Map<String, Object> got = esc.get(INDEX, "simple", "s_22");
+		Map<String, Object> got = esc.get(INDEX, "_doc", "s_22");
 		System.out.println(got);
 		return ids;
 	}
