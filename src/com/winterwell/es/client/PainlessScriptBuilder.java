@@ -10,6 +10,7 @@ import java.util.Set;
 import java.util.regex.Pattern;
 
 import com.winterwell.utils.StrUtils;
+import com.winterwell.utils.TodoException;
 import com.winterwell.utils.containers.ArrayMap;
 import com.winterwell.utils.containers.Containers;
 import com.winterwell.utils.io.FileUtils;
@@ -77,13 +78,12 @@ public class PainlessScriptBuilder {
 			script = sb.toString();
 		} else if (diffs!=null) {
 			StringBuilder sb = new StringBuilder();
-			fromJsonPatchOps2(diffs, sb);
+			fromJsonPatchOps2(sb);
 			script = sb.toString();			
 		}
 	}
 
-	private void fromJsonPatchOps2(StringBuilder sb) {
-		String e = "e";
+	private void fromJsonPatchOps2(StringBuilder sb) {		
 		sb.append("Map e=ctx._source;\n");
 		for(JsonPatchOp op : diffs) {
 			appendOp(sb, op);
@@ -91,56 +91,54 @@ public class PainlessScriptBuilder {
 	}
 
 	private void appendOp(StringBuilder sb, JsonPatchOp op) {
+		String e = "e";
+		String vs = op.value==null? null : encodeValue(op.value);
 		switch(op.op) {
 		case add:
+			// TODO add into an array should never replace
+			sb.append(e+op.path.replace('/', '.')+"="+vs+";\n");
 		case replace:
-			sb.append(e+op.path.replace('/', '.')+"="+v);
+			sb.append(e+op.path.replace('/', '.')+"="+vs+";\n");
 			break;
 		case copy:
+			sb.append(e+op.path.replace('/', '.')+"="+e+op.from.replace('/', '.')+";\n");
 			break;
 		case move:
+			sb.append(e+op.path.replace('/', '.')+"="+e+op.from.replace('/', '.')+";\n");
+			sb.append(e+op.from.replace('/', '.')+"=null;\n");
 			break;
 		case remove:
+			sb.append(e+op.path.replace('/', '.')+"=null;\n");
 			break;
 		case test:
-			break;
-		}
-		// collections?
-		if (v instanceof Collection || v.getClass().isArray()) {
-			String el = var+"."+k;
-			List<Object> vlist = Containers.asList(v);
-			// This fugly code does set-style uniqueness. If there is a nicer way please do say.
-			// I assume naming the language "painless" is ES's joke on the rest of us.
-			sb.append("if ("+el+"!=null) {for(int i=0; i<"+rlist+".size(); i++) {def x="+rlist+".get(i); if (!"+el+".contains(x)) "+el+".add(x);}} else {"+el+"="+rlist+";}\n");
-			continue;
-		} else if (v instanceof Map) {
-			String el = var+"."+me.getKey();
-			Map vmap = (Map) v;								
-			// shove into params
-			String pid = addParam(vmap);
-			// TODO recurse??
-			sb.append("if ("+el+"==null) "+el+"=params."+pid+"; else "+el+".putAll(params."+pid+");\n");
-			continue;
+			throw new TodoException(op);
 		}
 		
-		String vs;
+	}
+
+/**
+ * TODO use in {@link #fromJsonObject2(Map, StringBuilder, String)}from
+ * @param v
+ * @return
+ */
+	private String encodeValue(Object v) {
+		if (v instanceof Collection || v.getClass().isArray() || v instanceof Map) {
+			// shove into params
+			String pid = addParam(v);
+			return "params."+pid;
+		}		
 		if (v instanceof String) {
-			vs = StrUtils.convertToJavaString((String) v);
-		} else if (v instanceof Time) {
-			vs = '"'+((Time)v).toISOString()+'"'; 
-		} else if (v instanceof XId) {
-			vs = StrUtils.convertToJavaString(v.toString());
+			return StrUtils.convertToJavaString((String) v);
+		}
+		if (v instanceof Time) {
+			return StrUtils.convertToJavaString(((Time)v).toISOString()); 
+		}
+		if (v instanceof XId) {
+			return StrUtils.convertToJavaString(v.toString());
 		} else {
 			// just number, boolean I think??
-			vs = v.toString();
+			return v.toString();
 		}
-		if (StrUtils.isWord(k)) {
-			sb.append(var+"."+k+" = "+vs+";\n");
-		} else {
-			// handle e.g. "@class"
-			sb.append(var+".put(\""+k+"\","+vs+");\n");
-		}
-		
 	}
 
 	/**
