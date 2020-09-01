@@ -14,6 +14,7 @@ import com.winterwell.utils.containers.ArrayMap;
 import com.winterwell.utils.containers.Containers;
 import com.winterwell.utils.io.FileUtils;
 import com.winterwell.utils.time.Time;
+import com.winterwell.utils.web.JsonPatchOp;
 import com.winterwell.web.data.XId;
 
 /**
@@ -34,6 +35,8 @@ public class PainlessScriptBuilder {
 	 * parameters that should not be merged (use overwrite instead)
 	 */
 	private Set<String> hardSetParams = new HashSet();
+
+	private List<JsonPatchOp> diffs;
 
 	public static String basicScript = loadScript(PainlessScriptBuilder.class.getResourceAsStream(
 			"update.painless.js"));
@@ -72,7 +75,72 @@ public class PainlessScriptBuilder {
 			String var = "e";
 			fromJsonObject2(jsonObject, sb, var);
 			script = sb.toString();
+		} else if (diffs!=null) {
+			StringBuilder sb = new StringBuilder();
+			fromJsonPatchOps2(diffs, sb);
+			script = sb.toString();			
 		}
+	}
+
+	private void fromJsonPatchOps2(StringBuilder sb) {
+		String e = "e";
+		sb.append("Map e=ctx._source;\n");
+		for(JsonPatchOp op : diffs) {
+			appendOp(sb, op);
+		}			
+	}
+
+	private void appendOp(StringBuilder sb, JsonPatchOp op) {
+		switch(op.op) {
+		case add:
+		case replace:
+			sb.append(e+op.path.replace('/', '.')+"="+v);
+			break;
+		case copy:
+			break;
+		case move:
+			break;
+		case remove:
+			break;
+		case test:
+			break;
+		}
+		// collections?
+		if (v instanceof Collection || v.getClass().isArray()) {
+			String el = var+"."+k;
+			List<Object> vlist = Containers.asList(v);
+			// This fugly code does set-style uniqueness. If there is a nicer way please do say.
+			// I assume naming the language "painless" is ES's joke on the rest of us.
+			sb.append("if ("+el+"!=null) {for(int i=0; i<"+rlist+".size(); i++) {def x="+rlist+".get(i); if (!"+el+".contains(x)) "+el+".add(x);}} else {"+el+"="+rlist+";}\n");
+			continue;
+		} else if (v instanceof Map) {
+			String el = var+"."+me.getKey();
+			Map vmap = (Map) v;								
+			// shove into params
+			String pid = addParam(vmap);
+			// TODO recurse??
+			sb.append("if ("+el+"==null) "+el+"=params."+pid+"; else "+el+".putAll(params."+pid+");\n");
+			continue;
+		}
+		
+		String vs;
+		if (v instanceof String) {
+			vs = StrUtils.convertToJavaString((String) v);
+		} else if (v instanceof Time) {
+			vs = '"'+((Time)v).toISOString()+'"'; 
+		} else if (v instanceof XId) {
+			vs = StrUtils.convertToJavaString(v.toString());
+		} else {
+			// just number, boolean I think??
+			vs = v.toString();
+		}
+		if (StrUtils.isWord(k)) {
+			sb.append(var+"."+k+" = "+vs+";\n");
+		} else {
+			// handle e.g. "@class"
+			sb.append(var+".put(\""+k+"\","+vs+");\n");
+		}
+		
 	}
 
 	/**
@@ -81,8 +149,7 @@ public class PainlessScriptBuilder {
 	 * @return this
 	 */
 	public static PainlessScriptBuilder fromJsonObject(Map<String, Object> doc) {
-		// TODO maybe refactor to use Merger and Diff from Depot??
-		// NB use Debug.explain(var) to get debug info out
+		// NB use Debug.explain(var) to get debug info out		
 		PainlessScriptBuilder psb = new PainlessScriptBuilder();
 		psb.setJsonObject(doc);
 		return psb;
@@ -90,6 +157,7 @@ public class PainlessScriptBuilder {
 	
 	public void setJsonObject(Map<String, Object> jsonObject) {
 		assert script == null;
+		assert diffs==null;
 		this.jsonObject = jsonObject;
 	}
 
@@ -237,6 +305,18 @@ public class PainlessScriptBuilder {
 	@Override
 	public String toString() {
 		return "PainlessScriptBuilder [script=\n" + script + "\nparams=" + params + "]";
+	}
+
+	public static PainlessScriptBuilder fromJsonPatchOps(List<JsonPatchOp> diffs) {
+		PainlessScriptBuilder psb = new PainlessScriptBuilder();
+		psb.setJsonPatchOps(diffs);
+		return psb;
+	}
+
+	private void setJsonPatchOps(List<JsonPatchOp> diffs) {
+		assert jsonObject == null;
+		assert script == null;
+		this.diffs = diffs;
 	}
 
 	
