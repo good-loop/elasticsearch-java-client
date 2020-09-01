@@ -82,6 +82,7 @@ public class PutMappingRequestBuilderTest extends ESTest {
 				
 		// set a mapping
 		PutMappingRequestBuilder pm = esjc.admin().indices().preparePutMapping(idx);
+		pm.setType("mytesttype");
 		ESType mytype = new ESType()
 				.property("foo", ESType.keyword)
 				.property("bar", new ESType().text());
@@ -91,7 +92,7 @@ public class PutMappingRequestBuilderTest extends ESTest {
 		IESResponse resp = pm.get().check();
 		
 		// now index an item
-		IndexRequestBuilder irb = esjc.prepareIndex(idx, "test_id_1");
+		IndexRequestBuilder irb = esjc.prepareIndex(idx, "mytesttype", "test_id_1");
 		irb.setBodyDoc(new ArrayMap(
 			"foo", "hello",
 			"bar", "world"
@@ -117,6 +118,7 @@ public class PutMappingRequestBuilderTest extends ESTest {
 		ESType mytype = new ESType()
 				.property("foo", ESType.keyword)
 				.property("bar", new ESType().INTEGER());
+		pm.setType("mybadtype");
 		pm.setMapping(mytype);
 		pm.setDebug(true);
 		
@@ -124,7 +126,7 @@ public class PutMappingRequestBuilderTest extends ESTest {
 		
 		// now index an item
 		try {
-			IndexRequestBuilder irb = esjc.prepareIndex(idx, "test_id_1");
+			IndexRequestBuilder irb = esjc.prepareIndex(idx, "mybadtype", "test_id_1");
 			irb.setBodyDoc(new ArrayMap(
 				"foo", true,
 				"bar", "Not a number"

@@ -68,7 +68,7 @@ public class ESHttpRequest<SubClass extends ESHttpRequest, ResponseSubClass exte
 	 */
 	public SubClass setPath(ESPath path) {
 		if (path.indices!=null) setIndices(path.indices);
-		if (path.type!=null) setType(path.type); // no types in ESv7
+		if (path.type!=null) setType(path.type);
 		if (path.id!=null) setId(path.id);
 		return (SubClass) this;
 	}
@@ -115,8 +115,6 @@ public class ESHttpRequest<SubClass extends ESHttpRequest, ResponseSubClass exte
 	int retries;
 
 	protected boolean debug;
-
-	private boolean include_type_name;
 	
 	public SubClass setDebug(boolean debug) {
 		this.debug = debug;
@@ -132,16 +130,10 @@ public class ESHttpRequest<SubClass extends ESHttpRequest, ResponseSubClass exte
 		this.retries = retries;
 	}
 
-//	/**
-//	 * Gone in ESv7
-//	 * See https://www.elastic.co/guide/en/elasticsearch/reference/7.6/parent-join.html
-//	 * @param parentId
-//	 * @return
-//	 */
-//	public SubClass setParent(String parentId) {
-//		params.put("parent", parentId);
-//		return (SubClass) this;
-//	}
+	public SubClass setParent(String parentId) {
+		params.put("parent", parentId);
+		return (SubClass) this;
+	}
 
 	
 	public SubClass setId(String id) {
@@ -193,10 +185,7 @@ public class ESHttpRequest<SubClass extends ESHttpRequest, ResponseSubClass exte
 	}
 	
 	public SubClass setType(String type) {
-		// ESv7 - no types
-		if (include_type_name || "_doc".equals(type)) {
-			this.type = type;
-		}
+		this.type = type;		
 		return (SubClass) this;
 	}
 
@@ -277,7 +266,7 @@ public class ESHttpRequest<SubClass extends ESHttpRequest, ResponseSubClass exte
 	}
 
 	/**
-	 * @deprecated Why not embrace the new typeless world?
+	 * No-op here -- included for ESv7 compatability.
 	 * 
 	 * MUST be called before {@link #setType(String)} or {@link #setPath(ESPath)} 
 	 * to have an effect!
@@ -287,7 +276,7 @@ public class ESHttpRequest<SubClass extends ESHttpRequest, ResponseSubClass exte
 	 */
 	public SubClass setIncludeTypeName(boolean include_type_name) {
 		getParams().put("include_type_name", include_type_name);
-		this.include_type_name = include_type_name;
+//		this.include_type_name = include_type_name;
 		return (SubClass) this;
 	}
 
@@ -308,9 +297,8 @@ public class ESHttpRequest<SubClass extends ESHttpRequest, ResponseSubClass exte
 			if (indices.size()!=0) StrUtils.pop(url, 1);
 		}
 		
-		// Note: Types have effectively gone in ESv7
-		// -- but sometimes the dummy type _doc is needed
-		if (type!=null && ("_doc".equals(type) || include_type_name)) {
+		// Note: Types are in ESv6, though they have effectively gone in ESv7
+		if (type!=null) { // && ("_doc".equals(type) || include_type_name)) {
 			url.append("/"+WebUtils.urlEncode(type));
 		}
 		

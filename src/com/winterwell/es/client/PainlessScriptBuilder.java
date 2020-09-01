@@ -19,6 +19,8 @@ import com.winterwell.utils.web.JsonPatchOp;
 import com.winterwell.web.data.XId;
 
 /**
+ * @deprecated Status: DRAFT! more dev & testing wanted
+ * 
  * Make Painless scripts
  * @author daniel
  * @testedby {@link PainlessScriptBuilderTest}
