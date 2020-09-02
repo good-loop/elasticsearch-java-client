@@ -7,7 +7,6 @@ import com.winterwell.es.client.ESHttpClient;
 import com.winterwell.utils.Dep;
 import com.winterwell.utils.Printer;
 import com.winterwell.utils.io.ConfigFactory;
-import com.winterwell.utils.io.ConfigFactoryTest;
 
 public class ESTest {
 

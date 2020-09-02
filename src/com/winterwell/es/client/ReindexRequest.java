@@ -5,7 +5,6 @@ package com.winterwell.es.client;
 
 import java.util.Map;
 
-import com.winterwell.es.ESUtils;
 import com.winterwell.utils.TodoException;
 import com.winterwell.utils.containers.ArrayMap;
 

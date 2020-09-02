@@ -3,7 +3,6 @@ package com.winterwell.es;
 import com.winterwell.es.client.BulkRequestBuilderTest;
 import com.winterwell.es.client.ESConfig;
 import com.winterwell.es.client.ESHttpClient;
-import com.winterwell.es.client.admin.PutMappingRequestBuilder;
 import com.winterwell.gson.FlexiGson;
 import com.winterwell.utils.Dep;
 

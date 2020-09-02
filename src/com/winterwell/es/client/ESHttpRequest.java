@@ -1,21 +1,19 @@
 package com.winterwell.es.client;
 
-import java.util.Collection;
 import java.util.Map;
 
 import org.eclipse.jetty.util.ajax.JSON;
 
 import com.google.common.util.concurrent.ListenableFuture;
 import com.winterwell.es.ESPath;
-import com.winterwell.es.client.admin.PutMappingRequestBuilder;
 import com.winterwell.es.client.agg.Aggregation;
 import com.winterwell.es.client.query.ESQueryBuilder;
 import com.winterwell.es.client.suggest.Suggester;
 import com.winterwell.es.fail.ESDocNotFoundException;
 import com.winterwell.es.fail.ESException;
-import com.winterwell.es.fail.IElasticException;
 import com.winterwell.es.fail.ESIndexAlreadyExistsException;
 import com.winterwell.es.fail.ESMapperParsingException;
+import com.winterwell.es.fail.IElasticException;
 import com.winterwell.gson.Gson;
 import com.winterwell.gson.GsonBuilder;
 import com.winterwell.gson.StandardAdapters;

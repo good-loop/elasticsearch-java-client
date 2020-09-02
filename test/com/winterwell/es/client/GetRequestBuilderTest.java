@@ -6,10 +6,8 @@ import java.util.Map;
 import org.junit.Test;
 
 import com.winterwell.es.ESTest;
-import com.winterwell.es.ESType;
 import com.winterwell.es.UtilsForESTests;
 import com.winterwell.es.client.admin.CreateIndexRequest;
-import com.winterwell.es.client.admin.PutMappingRequestBuilder;
 import com.winterwell.utils.Dep;
 import com.winterwell.utils.Utils;
 import com.winterwell.utils.containers.ArrayMap;

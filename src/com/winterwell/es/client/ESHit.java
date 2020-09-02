@@ -3,7 +3,6 @@ package com.winterwell.es.client;
 import java.util.Map;
 import java.util.Objects;
 
-import com.winterwell.gson.Gson;
 import com.winterwell.utils.containers.ArrayMap;
 import com.winterwell.utils.web.IHasJson;
 import com.winterwell.web.ajax.JThing;

@@ -1,12 +1,7 @@
 package com.winterwell.es.client;
 
-import static org.junit.Assert.*;
-
-import java.util.Map;
-
 import org.junit.Test;
 
-import com.winterwell.es.ESPath;
 import com.winterwell.es.ESTest;
 import com.winterwell.es.client.admin.CreateIndexRequest;
 import com.winterwell.es.client.query.ESQueryBuilder;

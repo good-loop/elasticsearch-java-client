@@ -5,19 +5,15 @@ import java.util.Map;
 import org.junit.Test;
 
 import com.winterwell.es.ESTest;
-import com.winterwell.es.client.ESConfig;
 import com.winterwell.es.client.ESHttpClient;
 import com.winterwell.es.client.IESResponse;
 import com.winterwell.es.client.IndexRequestBuilder;
 import com.winterwell.es.client.admin.CreateIndexRequest.Analyzer;
-import com.winterwell.es.fail.ESException;
 import com.winterwell.es.fail.ESIndexAlreadyExistsException;
-import com.winterwell.utils.Dep;
 import com.winterwell.utils.Printer;
 import com.winterwell.utils.Utils;
 import com.winterwell.utils.containers.ArrayMap;
 import com.winterwell.utils.containers.Containers;
-import com.winterwell.utils.io.SysOutCollectorStream;
 
 public class CreateIndexRequestTest extends ESTest {
 

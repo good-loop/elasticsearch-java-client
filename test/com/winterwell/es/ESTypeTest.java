@@ -4,7 +4,6 @@ import org.junit.Test;
 
 import com.winterwell.es.client.ESHttpClient;
 import com.winterwell.utils.Printer;
-import com.winterwell.utils.io.SysOutCollectorStream;
 
 public class ESTypeTest extends ESTest {
 	

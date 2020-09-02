@@ -1,7 +1,5 @@
 package com.winterwell.es.client;
 
-import static org.junit.Assert.*;
-
 import java.util.Map;
 
 import org.junit.Test;
@@ -11,7 +9,6 @@ import com.winterwell.es.client.admin.CreateIndexRequest;
 import com.winterwell.utils.Dep;
 import com.winterwell.utils.Utils;
 import com.winterwell.utils.containers.ArrayMap;
-import com.winterwell.utils.log.Log;
 
 public class ReindexRequestTest {
 

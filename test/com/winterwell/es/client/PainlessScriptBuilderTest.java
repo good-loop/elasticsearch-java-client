@@ -4,16 +4,13 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
-import org.eclipse.jetty.util.ajax.JSON;
 import org.junit.Test;
 
 import com.winterwell.es.ESPath;
 import com.winterwell.es.ESTest;
 import com.winterwell.utils.Dep;
 import com.winterwell.utils.Printer;
-import com.winterwell.utils.Utils;
 import com.winterwell.utils.containers.ArrayMap;
-import com.winterwell.utils.containers.Containers;
 import com.winterwell.utils.web.JsonPatchOp;
 import com.winterwell.utils.web.SimpleJson;
 

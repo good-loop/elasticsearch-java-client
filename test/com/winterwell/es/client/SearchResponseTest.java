@@ -1,7 +1,5 @@
 package com.winterwell.es.client;
 
-import static org.junit.Assert.*;
-
 import java.util.List;
 import java.util.Map;
 

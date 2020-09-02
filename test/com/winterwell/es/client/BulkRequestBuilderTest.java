@@ -8,8 +8,6 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import com.winterwell.es.ESTest;
-import com.winterwell.es.ESType;
-import com.winterwell.es.client.admin.PutMappingRequestBuilder;
 import com.winterwell.es.UtilsForESTests;
 import com.winterwell.gson.FlexiGson;
 import com.winterwell.utils.Dep;
