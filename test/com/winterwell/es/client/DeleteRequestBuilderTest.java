@@ -55,6 +55,7 @@ public class DeleteRequestBuilderTest extends ESTest {
 			GetResponse r2 = (GetResponse) gr2.get().check();
 			assert false : r2.getJson();
 		} catch(WebEx.E404 good) {
+			assert good != null;
 			// :)
 		}
 	}
@@ -72,7 +73,7 @@ public class DeleteRequestBuilderTest extends ESTest {
 			Utils.sleep(100);					
 		}
 				
-		// and delete it!?
+		// delete a non-existent doc - throws an ESDocNotFoundException (404)
 		try {
 			DeleteRequestBuilder drb = new DeleteRequestBuilder(esjc);
 			drb.setIndex(idx).setId("test_id_never88");
@@ -81,27 +82,9 @@ public class DeleteRequestBuilderTest extends ESTest {
 			System.out.println(res);
 			assert false;
 		} catch(WebEx.E404 ok) {
+			assert ok != null;
 			// OK
 		}
 	}
 	
-	@Test
-	public void testDelete404_quiet() {
-		ESHttpClient esjc = getESJC();		
-		// make an index
-		String idx = "test_putgetdel";
-		if ( ! esjc.admin().indices().indexExists(idx)) {
-			CreateIndexRequest cir = esjc.admin().indices().prepareCreate(idx);
-			cir.get().check();
-			Utils.sleep(100);					
-		}
-				
-		// and delete it!?
-		ESPath path = new ESPath(idx, "test_id_never89");
-		DeleteRequestBuilder drb = esjc.prepareDelete(path);
-		drb.setDebug(true);
-		IESResponse res = drb.get().check();
-		System.out.println(res);
-	}
-
 }

@@ -34,7 +34,7 @@ public class UpdateRequestBuilder extends ESHttpRequest<UpdateRequestBuilder,IES
 		super(esHttpClient,"_update");
 		method = "POST";
 		bulkOpName = "update";
-		setType("_doc"); // the new ESv7 omni-type
+		setType(TYPE_DOC); // the new ESv7 omni-type
 	}
 	
 	/**

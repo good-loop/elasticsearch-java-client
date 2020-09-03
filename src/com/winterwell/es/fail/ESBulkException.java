@@ -17,7 +17,7 @@ public class ESBulkException extends ESException {
 	}
 	
 	public ESBulkException(List<Exception> exs) {
-		super(exs.size()+" errors", exs.size() > 1? exs.get(0) : null);
+		super(exs.size()+" errors - call getErrors() for details: "+exs);
 		this.errors = exs;
 	}
 

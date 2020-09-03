@@ -64,7 +64,9 @@ public class BulkRequestBuilderTest extends ESTest {
 		ESHttpClient esc = Dep.get(ESHttpClient.class);
 
 		BulkRequestBuilder bulk = esc.prepareBulk();
-		IndexRequestBuilder pi = esc.prepareIndex(INDEX, "simple", "s1");
+		
+		bulk.setDebug(true);
+		IndexRequestBuilder pi = esc.prepareIndex(INDEX, bulk.TYPE_DOC, "s1");		
 		pi.setBodyMap(new ArrayMap("one", "a"));
 		bulk.add(pi);
 		
@@ -73,7 +75,7 @@ public class BulkRequestBuilderTest extends ESTest {
 		
 		Utils.sleep(1500);
 		
-		Map<String, Object> got = esc.get(INDEX, "simple", "s1");
+		Map<String, Object> got = esc.get(INDEX, bulk.TYPE_DOC, "s1");
 		System.out.println(got);
 	}
 

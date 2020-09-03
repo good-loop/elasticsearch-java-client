@@ -30,6 +30,11 @@ import com.winterwell.web.WebEx;
 public class ESHttpRequest<SubClass extends ESHttpRequest, ResponseSubClass extends IESResponse> {
 
 	/**
+	 * The default type for everything (as of ESv6)
+	 */
+	public static final String TYPE_DOC = "_doc";
+	
+	/**
 	 * Force a refresh?
 	 * See https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-refresh.html
 	 * @param string false | true | wait_for

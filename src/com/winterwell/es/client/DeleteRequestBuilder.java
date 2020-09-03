@@ -14,7 +14,7 @@ public class DeleteRequestBuilder extends ESHttpRequest<DeleteRequestBuilder, IE
 	public DeleteRequestBuilder(ESHttpClient hClient) {
 		super(hClient, null);
 		method = "DELETE";
-		setType("_doc"); // the new ESv7 omni-type
+		setType(TYPE_DOC); // the new ESv7 omni-type
 	}
 	
 	@Override
