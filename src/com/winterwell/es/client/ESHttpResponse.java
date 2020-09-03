@@ -338,11 +338,16 @@ IHasJson
 			throw new IllegalArgumentException("hits field cannot be null");
 		}
 		// c.f. https://www.elastic.co/guide/en/elasticsearch/reference/7.x/search-request-track-total-hits.html
-		Map hitTotal = (Map) hits.get("total");
+		Object hitTotal = hits.get("total");
 		if (hitTotal == null){
 			throw new IllegalArgumentException("hitTotal field cannot be null");
 		}
-		Number hitTotalValue = (Number) hitTotal.get("value");
+		// ESv6
+		if (hitTotal instanceof Number) {
+			return ((Number) hitTotal).longValue();
+		}
+		// ESv7
+		Number hitTotalValue = (Number) ((Map)hitTotal).get("value");
 		return hitTotalValue.longValue();
 	}
 
