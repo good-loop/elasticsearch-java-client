@@ -60,6 +60,10 @@ public final class ESHit<T> implements IHasJson {
 		return _id;
 	}
 	
+	/**
+	 * JThing wrapper around the source object
+	 * @return never null
+	 */
 	public JThing<T> getJThing() {
 		if (jthing==null) {
 			assert _source != null;
