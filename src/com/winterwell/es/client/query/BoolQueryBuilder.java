@@ -75,7 +75,8 @@ public class BoolQueryBuilder extends ESQueryBuilder {
 		return this;
 	}
 	/**
-	 * TODO The clause (query) must appear in matching documents. However unlike must the score of the query will be ignored. 
+	 * TODO The clause (query) must appear in matching documents. 
+	 * However unlike must the score of the query will be ignored. 
 	 * Filter clauses are executed in filter context, meaning that scoring is ignored and clauses are considered for caching.
 	 * ref??
 	 * 
