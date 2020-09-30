@@ -10,10 +10,12 @@ import java.util.Set;
 import java.util.regex.Pattern;
 
 import com.winterwell.utils.StrUtils;
+import com.winterwell.utils.TodoException;
 import com.winterwell.utils.containers.ArrayMap;
 import com.winterwell.utils.containers.Containers;
 import com.winterwell.utils.io.FileUtils;
 import com.winterwell.utils.time.Time;
+import com.winterwell.utils.web.JsonPatchOp;
 import com.winterwell.web.data.XId;
 
 /**
@@ -34,6 +36,8 @@ public class PainlessScriptBuilder {
 	 * parameters that should not be merged (use overwrite instead)
 	 */
 	private Set<String> hardSetParams = new HashSet();
+
+	private List<JsonPatchOp> diffs;
 
 	public static String basicScript = loadScript(PainlessScriptBuilder.class.getResourceAsStream(
 			"update.painless.js"));
@@ -72,6 +76,68 @@ public class PainlessScriptBuilder {
 			String var = "e";
 			fromJsonObject2(jsonObject, sb, var);
 			script = sb.toString();
+		} else if (diffs!=null) {
+			StringBuilder sb = new StringBuilder();
+			fromJsonPatchOps2(sb);
+			script = sb.toString();			
+		}
+	}
+
+	private void fromJsonPatchOps2(StringBuilder sb) {		
+		sb.append("Map e=ctx._source;\n");
+		for(JsonPatchOp op : diffs) {
+			appendOp(sb, op);
+		}			
+	}
+
+	private void appendOp(StringBuilder sb, JsonPatchOp op) {
+		String e = "e";
+		String vs = op.value==null? null : encodeValue(op.value);
+		switch(op.op) {
+		case add:
+			// TODO add into an array should never replace
+			sb.append(e+op.path.replace('/', '.')+"="+vs+";\n");
+		case replace:
+			sb.append(e+op.path.replace('/', '.')+"="+vs+";\n");
+			break;
+		case copy:
+			sb.append(e+op.path.replace('/', '.')+"="+e+op.from.replace('/', '.')+";\n");
+			break;
+		case move:
+			sb.append(e+op.path.replace('/', '.')+"="+e+op.from.replace('/', '.')+";\n");
+			sb.append(e+op.from.replace('/', '.')+"=null;\n");
+			break;
+		case remove:
+			sb.append(e+op.path.replace('/', '.')+"=null;\n");
+			break;
+		case test:
+			throw new TodoException(op);
+		}
+		
+	}
+
+/**
+ * TODO use in {@link #fromJsonObject2(Map, StringBuilder, String)}from
+ * @param v
+ * @return
+ */
+	private String encodeValue(Object v) {
+		if (v instanceof Collection || v.getClass().isArray() || v instanceof Map) {
+			// shove into params
+			String pid = addParam(v);
+			return "params."+pid;
+		}		
+		if (v instanceof String) {
+			return StrUtils.convertToJavaString((String) v);
+		}
+		if (v instanceof Time) {
+			return StrUtils.convertToJavaString(((Time)v).toISOString()); 
+		}
+		if (v instanceof XId) {
+			return StrUtils.convertToJavaString(v.toString());
+		} else {
+			// just number, boolean I think??
+			return v.toString();
 		}
 	}
 
@@ -81,8 +147,7 @@ public class PainlessScriptBuilder {
 	 * @return this
 	 */
 	public static PainlessScriptBuilder fromJsonObject(Map<String, Object> doc) {
-		// TODO maybe refactor to use Merger and Diff from Depot??
-		// NB use Debug.explain(var) to get debug info out
+		// NB use Debug.explain(var) to get debug info out		
 		PainlessScriptBuilder psb = new PainlessScriptBuilder();
 		psb.setJsonObject(doc);
 		return psb;
@@ -90,6 +155,7 @@ public class PainlessScriptBuilder {
 	
 	public void setJsonObject(Map<String, Object> jsonObject) {
 		assert script == null;
+		assert diffs==null;
 		this.jsonObject = jsonObject;
 	}
 
@@ -237,6 +303,18 @@ public class PainlessScriptBuilder {
 	@Override
 	public String toString() {
 		return "PainlessScriptBuilder [script=\n" + script + "\nparams=" + params + "]";
+	}
+
+	public static PainlessScriptBuilder fromJsonPatchOps(List<JsonPatchOp> diffs) {
+		PainlessScriptBuilder psb = new PainlessScriptBuilder();
+		psb.setJsonPatchOps(diffs);
+		return psb;
+	}
+
+	private void setJsonPatchOps(List<JsonPatchOp> diffs) {
+		assert jsonObject == null;
+		assert script == null;
+		this.diffs = diffs;
 	}
 
 	

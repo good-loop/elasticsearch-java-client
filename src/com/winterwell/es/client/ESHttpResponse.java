@@ -16,6 +16,7 @@ import com.winterwell.utils.Utils;
 import com.winterwell.utils.containers.Containers;
 import com.winterwell.utils.log.Log;
 import com.winterwell.utils.web.IHasJson;
+import com.winterwell.web.ajax.JThing;
 
 /**
  * Imitates {@link GetResponse}
@@ -293,6 +294,22 @@ IHasJson
 		List<X> results = Containers.apply(hits, map -> gson().convert((Map)map.get("_source"), klass));
 		return results;
 	}
+	
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * Uses {@link JThing} for the convertor.
+	 */
+	@Override
+	public <X> List<ESHit<X>> getHits(Class<? extends X> type) {
+		check();
+		Map<String, Object> jobj = getJsonMap();
+		List<Map> hits = (List<Map>) ((Map)jobj.get("hits")).get("hits");
+		List<ESHit<X>> results = Containers.apply(hits, 
+				map -> gson().convert(map, ESHit.class).setType(type)
+			);
+		return results;
+	}
 
 	
 	@Override
@@ -321,11 +338,16 @@ IHasJson
 			throw new IllegalArgumentException("hits field cannot be null");
 		}
 		// c.f. https://www.elastic.co/guide/en/elasticsearch/reference/7.x/search-request-track-total-hits.html
-		Map hitTotal = (Map) hits.get("total");
+		Object hitTotal = hits.get("total");
 		if (hitTotal == null){
 			throw new IllegalArgumentException("hitTotal field cannot be null");
 		}
-		Number hitTotalValue = (Number) hitTotal.get("value");
+		// ESv6
+		if (hitTotal instanceof Number) {
+			return ((Number) hitTotal).longValue();
+		}
+		// ESv7
+		Number hitTotalValue = (Number) ((Map)hitTotal).get("value");
 		return hitTotalValue.longValue();
 	}
 
@@ -370,5 +392,6 @@ IHasJson
 	public Object toJson2() throws UnsupportedOperationException {
 		return Containers.objectAsMap(this);
 	}
+
 	
 }

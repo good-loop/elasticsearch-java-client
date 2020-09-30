@@ -9,6 +9,7 @@ import com.winterwell.utils.TodoException;
 import com.winterwell.utils.containers.ArrayMap;
 import com.winterwell.utils.containers.Containers;
 import com.winterwell.utils.time.Time;
+import com.winterwell.utils.time.TimeUtils;
 
 /**
  * Convenience utils
@@ -92,6 +93,12 @@ public class ESQueryBuilders {
 		return new ESQueryBuilder(must);		
 	}
 	
+	/**
+	 * @param field
+	 * @param start NB: older than WELL_OLD=1900 is ignored
+	 * @param end NB: beyond WELL_FUTURE=3000AD is ignored
+	 * @return
+	 */
 	public static ESQueryBuilder dateRangeQuery(String field, Time start, Time end) {
 		assert field != null;
 		if (start==null && end==null) throw new NullPointerException("Must provide one of start/end");
@@ -99,11 +106,11 @@ public class ESQueryBuilders {
 			throw new IllegalArgumentException("Empty range :"+start+" to "+end);
 		}
 		Map rq = new ArrayMap();
-		if (start!=null) {
+		if (start!=null && start.isAfter(TimeUtils.WELL_OLD)) {
 			rq.put("from", start.toISOString());
 			rq.put("include_lower", true);
 		}
-		if (end!=null) {
+		if (end!=null && end.isBefore(TimeUtils.WELL_FUTURE)) {
 			rq.put("to", end.toISOString());
 			rq.put("include_upper", true);
 		}
