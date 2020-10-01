@@ -15,6 +15,7 @@ import com.winterwell.es.fail.ESDocNotFoundException;
 import com.winterwell.es.fail.ESException;
 import com.winterwell.es.fail.IElasticException;
 import com.winterwell.es.fail.ESIndexAlreadyExistsException;
+import com.winterwell.es.fail.ESIndexReadOnlyException;
 import com.winterwell.es.fail.ESMapperParsingException;
 import com.winterwell.gson.Gson;
 import com.winterwell.gson.GsonBuilder;
@@ -482,6 +483,11 @@ public class ESHttpRequest<SubClass extends ESHttpRequest, ResponseSubClass exte
 		if (ex instanceof WebEx.E404) {
 			// e.g. a get for an unstored object (a common case)
 			return new ESDocNotFoundException(getESPath());
+		}
+		// Let's make a super unhelpful error from ES a bit better
+		// See https://stackoverflow.com/questions/50609417/elasticsearch-error-cluster-block-exception-forbidden-12-index-read-only-all
+		if (ex instanceof WebEx.E403 && ex.getMessage().contains("FORBIDDEN/12/index read-only / allow delete")) {
+			return new ESIndexReadOnlyException((WebEx) ex);
 		}
 		if (ex instanceof WebEx.E40X) {
 			String msg = ex.getMessage();
