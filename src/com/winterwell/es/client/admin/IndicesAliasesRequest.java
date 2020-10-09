@@ -14,7 +14,7 @@ import com.winterwell.utils.containers.ArrayMap;
  * 
  * @see org.elasticsearch.action.admin.indices.alias.IndicesAliasesRequest
  * @author daniel
- * @testedby {@link IndicesAliasesRequestTest}
+ * @testedby  IndicesAliasesRequestTest}
  */
 public class IndicesAliasesRequest extends ESHttpRequest<IndicesAliasesRequest, IESResponse> {
 

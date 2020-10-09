@@ -3,7 +3,7 @@ package com.winterwell.es.client;
 import com.winterwell.utils.StrUtils;
 
 /**
- * @testedby {@link GetRequestBuilderTest}
+ * @testedby  GetRequestBuilderTest}
  * @author daniel
  *
  */
