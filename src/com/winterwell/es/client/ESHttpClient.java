@@ -309,7 +309,8 @@ public class ESHttpClient implements Flushable {
 		// what can we do to make sure all the CallES have been submitted??
 	}
 
-	
-
+	public TransformRequestBuilder prepareTransform() {
+		return new TransformRequestBuilder(this);
+	}
 	
 }
