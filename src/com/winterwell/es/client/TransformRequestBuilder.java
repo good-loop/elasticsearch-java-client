@@ -10,10 +10,18 @@ import com.winterwell.utils.containers.ArrayMap;
 
 public class TransformRequestBuilder extends ESHttpRequest<TransformRequestBuilder, IESResponse> {
 	
+	// called when a transform preview is requested
 	public TransformRequestBuilder(ESHttpClient esHttpClient) {
 		super(esHttpClient, "_transform/_preview");
 		setIndex(null); 
 		method = "POST";
+	}
+	
+	// called when creating and starting a transform job request
+	public TransformRequestBuilder(ESHttpClient esHttpClient, String transform_job, String request) {
+		super(esHttpClient, "_transform/"+transform_job);
+		setIndex(null); 
+		method = request; 
 	}
 	
 	/**
