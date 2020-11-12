@@ -117,6 +117,7 @@ public class TransformRequestBuilderTest extends ESTest {
 		Printer.out(response2);
 		
 		// stop transform job
+		Utils.sleep(2000);
 		TransformRequestBuilder trb3 = esc.prepareTransformStop("transform_testjob"); 
 		trb3.setDebug(true);
 		IESResponse response3 = trb3.get();
@@ -125,7 +126,8 @@ public class TransformRequestBuilderTest extends ESTest {
 		// delete transform job
 		TransformRequestBuilder trb4 = esc.prepareTransformDelete("transform_testjob"); 
 		trb4.setDebug(true);
-		trb4.get();
+		IESResponse response4 = trb4.get();
+		Printer.out(response4);
 	}
 
 }
