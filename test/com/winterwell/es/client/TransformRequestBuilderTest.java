@@ -3,14 +3,11 @@ package com.winterwell.es.client;
 import static org.junit.Assert.*;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import com.winterwell.es.ESTest;
 import com.winterwell.es.ESType;
-import com.winterwell.es.UtilsForESTests;
 import com.winterwell.es.client.admin.CreateIndexRequest;
 import com.winterwell.es.client.admin.PutMappingRequestBuilder;
 import com.winterwell.es.fail.ESIndexAlreadyExistsException;
@@ -20,7 +17,7 @@ import com.winterwell.utils.Printer;
 import com.winterwell.utils.Utils;
 import com.winterwell.utils.containers.ArrayMap;
 
-public class TransformRequestBuilderTest extends ESTest {
+public class TransformRequestBuilderTest {
 	
 	public final static String INDEX = "testtransform";
 
@@ -87,7 +84,9 @@ public class TransformRequestBuilderTest extends ESTest {
 		trb.setBody(INDEX, "datalog.transformed", terms, "");
 		trb.setDebug(true);
 		IESResponse response = trb.get();
-		Printer.out(response);
+		
+		// sanity check on whether the transformed data is correct
+		Printer.out(response.getParsedJson().get("preview"));
 	}
 	
 	@Test
@@ -108,26 +107,26 @@ public class TransformRequestBuilderTest extends ESTest {
 		trb.setBody(INDEX, "datalog.test_transformed", terms, "");
 		trb.setDebug(true);
 		IESResponse response = trb.get();
-		Printer.out(response);
+		assert response.isAcknowledged();
 		
 		// start transform job
 		TransformRequestBuilder trb2 = esc.prepareTransformStart("transform_testjob"); 
 		trb2.setDebug(true);
 		IESResponse response2 = trb2.get();
-		Printer.out(response2);
+		assert response2.isAcknowledged();
 		
 		// stop transform job
 		Utils.sleep(2000);
 		TransformRequestBuilder trb3 = esc.prepareTransformStop("transform_testjob"); 
 		trb3.setDebug(true);
 		IESResponse response3 = trb3.get();
-		Printer.out(response3);
+		assert response3.isAcknowledged();
 		
 		// delete transform job
 		TransformRequestBuilder trb4 = esc.prepareTransformDelete("transform_testjob"); 
 		trb4.setDebug(true);
 		IESResponse response4 = trb4.get();
-		Printer.out(response4);
+		assert response4.isAcknowledged();
 	}
 
 }
