@@ -21,7 +21,7 @@ import com.winterwell.web.data.XId;
 /**
  * Make Painless scripts
  * @author daniel
- * @testedby {@link PainlessScriptBuilderTest}
+ * @testedby  PainlessScriptBuilderTest}
  * 
  */
 public class PainlessScriptBuilder {

@@ -12,7 +12,7 @@ public class ESConfig {
 	/**
 	 * What version of ESJC is this?
 	 */
-	public static final String CLIENT_VERSION = "1.0.0";
+	public static final String CLIENT_VERSION = "1.0.1";
 	public static final String ES_SUPPORTED_VERSION = "7.0";
 	
 	/**

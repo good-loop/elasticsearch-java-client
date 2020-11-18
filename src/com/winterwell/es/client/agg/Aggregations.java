@@ -3,11 +3,15 @@
  */
 package com.winterwell.es.client.agg;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 import com.winterwell.es.client.query.ESQueryBuilder;
+import com.winterwell.utils.containers.ArrayMap;
 import com.winterwell.utils.time.Dt;
 import com.winterwell.utils.time.TUnit;
+import com.winterwell.utils.time.Time;
 /**
  * Builder methods for making {@link Aggregation}s
  * @author daniel
@@ -41,6 +45,7 @@ public class Aggregations {
 		if (interval.getValue() != 1.0) {
 			_interval = ((int)interval.getValue())+_interval; // FIXME do fractions work?!
 		}
+		// TODO s/interval/calendar_interval or fixed_interval/
 		return new Aggregation(name, "date_histogram", field).put("interval", _interval);
 	}
 
@@ -111,5 +116,31 @@ public class Aggregations {
 		
 				
 		return aggResult;
+	}
+
+	/**
+	 * See https://www.elastic.co/guide/en/elasticsearch/reference/current/search-aggregations-bucket-daterange-aggregation.html
+	 * @param name
+	 * @param field
+	 * @param times The start/end markers for the buckets. You can start or end the list with null,
+	 * to specify an open-ended start/end.
+	 * 	The results include the `from` value and excludes the `to` value for each range.
+	 * @return
+	 */
+	public static Aggregation dateRange(String name, String field, List<Time> times) {
+		Aggregation agg = new Aggregation(name, "date_range", field);
+		List<Map> ranges = new ArrayList();
+		// "to": "now-10M/M" <-- interesting format: "< now minus 10 months, rounded down to the start of the month"		
+		for(int i=1; i<times.size(); i++) {
+			Time prev = times.get(i-1);
+			Time time = times.get(i);
+			ranges.add(new ArrayMap(
+					"from", prev==null? null : prev.getTime(),
+					"to", time==null? null : time.getTime()
+					));
+			prev=time;
+		}
+		agg.put("ranges", ranges);
+		return agg;
 	}	
 }

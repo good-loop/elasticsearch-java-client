@@ -167,6 +167,7 @@ public class ESQueryBuilders {
 	}
 
 	/**
+	 * // Is this the best for keywords??
 	 * https://www.elastic.co/guide/en/elasticsearch/reference/6.2/query-dsl-simple-query-string-query.html
 	 * @param q
 	 * @return

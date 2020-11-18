@@ -14,7 +14,7 @@ import com.winterwell.utils.containers.ArrayMap;
  * TODO add a streaming mode to this
  * 
  * @author Daniel
- * @testedby {@link BulkRequestBuilderTest}
+ * @testedby  BulkRequestBuilderTest}
  */
 public class BulkRequestBuilder extends ESHttpRequest<BulkRequestBuilder,BulkResponse> {
 

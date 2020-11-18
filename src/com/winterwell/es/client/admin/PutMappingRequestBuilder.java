@@ -10,7 +10,7 @@ import com.winterwell.utils.Utils;
  * Ref: https://www.elastic.co/guide/en/elasticsearch/reference/current/indices-put-mapping.html
  * See {@link ESType}
  * @author daniel
- * @testedby {@link PutMappingRequestBuilderTest}
+ * @testedby  PutMappingRequestBuilderTest}
  */
 public class PutMappingRequestBuilder extends ESHttpRequest<PutMappingRequestBuilder,IESResponse> {
 	
