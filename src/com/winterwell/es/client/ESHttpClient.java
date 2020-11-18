@@ -308,8 +308,25 @@ public class ESHttpClient implements Flushable {
 	public void flush() {
 		// what can we do to make sure all the CallES have been submitted??
 	}
-
 	
+	public TransformRequestBuilder prepareTransformPreview() {
+		return new TransformRequestBuilder(this);
+	}
 
+	public TransformRequestBuilder prepareTransform(String transform_job) {
+		return new TransformRequestBuilder(this, transform_job, "PUT");
+	}
+	
+	public TransformRequestBuilder prepareTransformStart(String transform_job) {
+		return new TransformRequestBuilder(this, transform_job+"/_start", "POST");
+	}
+	
+	public TransformRequestBuilder prepareTransformStop(String transform_job) {
+		return new TransformRequestBuilder(this, transform_job+"/_stop", "POST");
+	}
+	
+	public TransformRequestBuilder prepareTransformDelete(String transform_job) {
+		return new TransformRequestBuilder(this, transform_job, "DELETE");
+	}
 	
 }
