@@ -38,7 +38,7 @@ public class TransformRequestBuilder extends ESHttpRequest<TransformRequestBuild
 	}
 	
 	/**
-	 * Set the body of a transform request. Uses count aggregations (what about sum??)
+	 * Set the body of a transform request. Uses sum aggregation
 	 * @param srcIndex index source (where the data comes from)
 	 * @param destIndex index destination (where the aggregated data will go)
 	 * @param terms the terms which you want to group by (i.e. what fields will get kept)
@@ -53,6 +53,8 @@ public class TransformRequestBuilder extends ESHttpRequest<TransformRequestBuild
 		ArrayMap group_by = new ArrayMap();
 		for (String term : terms) {
 			group_by.put(term, new ArrayMap("terms", new ArrayMap("field", term)));
+			// for ES version >= 7.10.0, missing_bucket attribute supported to not ignore documents with null field
+			//group_by.put(term, new ArrayMap("terms", new ArrayMap("field", term, "missing_bucket", true)));
 		}
 		if ( ! Utils.isBlank(interval)) {
 			group_by.put("time", new ArrayMap("date_histogram", new ArrayMap(
@@ -72,14 +74,7 @@ public class TransformRequestBuilder extends ESHttpRequest<TransformRequestBuild
 		return this;
 	}
 	
-	/**
-	 * Set the body of a transform request. Does not ignore documents with null fields
-	 * @param srcIndex index source (where the data comes from)
-	 * @param destIndex index destination (where the aggregated data will go)
-	 * @param terms the terms which you want to group by (i.e. what fields will get kept)
-	 * @param interval (optional) if want to group by date histogram, specify interval format, e.g. "24h"
-	 * @return this
-	*/
+	// Similar to setBody function, but with painless script support to not ignore documents with null fields
 	public TransformRequestBuilder setBodyWithPainless(String srcIndex, String destIndex, List<String> terms, String interval) {		
 		// counts ??do we want sums in places??
 		ArrayMap aggregations = new ArrayMap("count", new ArrayMap("sum", new ArrayMap("field", "count")));
