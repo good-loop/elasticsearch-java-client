@@ -75,9 +75,12 @@ public class TransformRequestBuilder extends ESHttpRequest<TransformRequestBuild
 	}
 	
 	// Similar to setBody function, but with painless script support to not ignore documents with null fields
-	public TransformRequestBuilder setBodyWithPainless(String srcIndex, String destIndex, List<String> terms, String interval) {		
+	public TransformRequestBuilder setBodyWithPainless(String srcIndex, String destIndex, List<String> aggs, List<String> terms, String interval) {		
 		// counts ??do we want sums in places??
 		ArrayMap aggregations = new ArrayMap("count", new ArrayMap("sum", new ArrayMap("field", "count")));
+		for (String agg : aggs) {
+			aggregations.put(agg, new ArrayMap("sum", new ArrayMap("field", agg)));
+		}
 
 		ArrayMap group_by = new ArrayMap();
 		String script;
