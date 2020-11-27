@@ -1,7 +1,5 @@
 package com.winterwell.es.client.sort;
 
-import java.util.Map;
-
 import com.winterwell.utils.Utils;
 import com.winterwell.utils.containers.ArrayMap;
 import com.winterwell.utils.web.IHasJson;

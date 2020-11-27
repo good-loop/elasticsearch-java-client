@@ -1,6 +1,5 @@
 package com.winterwell.es.fail;
 
-import com.winterwell.es.ESPath;
 import com.winterwell.web.WebEx;
 
 /**

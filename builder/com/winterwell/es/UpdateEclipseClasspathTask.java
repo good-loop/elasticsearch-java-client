@@ -5,7 +5,6 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
-import java.util.regex.Pattern;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
@@ -17,7 +16,6 @@ import com.winterwell.utils.containers.Containers;
 import com.winterwell.utils.containers.Tree;
 import com.winterwell.utils.io.FileUtils;
 import com.winterwell.utils.web.WebUtils;
-import com.winterwell.utils.web.WebUtils2;
 import com.winterwell.utils.web.XMLNode;
 
 /**

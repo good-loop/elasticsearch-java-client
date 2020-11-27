@@ -7,12 +7,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import shadoworg.elasticsearch.common.xcontent.ToXContent;
-
 import com.winterwell.gson.FlexiGson;
 import com.winterwell.utils.StrUtils;
 import com.winterwell.utils.containers.ArrayMap;
 import com.winterwell.utils.containers.Containers;
+
+import shadoworg.elasticsearch.common.xcontent.ToXContent;
 
 /**
  * Elastic Search utils

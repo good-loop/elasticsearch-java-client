@@ -1,19 +1,12 @@
 package com.winterwell.es.client.admin;
 
-import static org.junit.Assert.*;
-
-import java.util.Map;
-
 import org.junit.Test;
 
 import com.winterwell.es.ESTest;
 import com.winterwell.es.ESType;
 import com.winterwell.es.client.ESHttpClient;
-import com.winterwell.es.client.GetRequestBuilder;
-import com.winterwell.es.client.GetResponse;
 import com.winterwell.es.client.IESResponse;
 import com.winterwell.es.client.IndexRequestBuilder;
-import com.winterwell.es.fail.ESIndexAlreadyExistsException;
 import com.winterwell.utils.Printer;
 import com.winterwell.utils.Utils;
 import com.winterwell.utils.containers.ArrayMap;

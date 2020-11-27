@@ -4,22 +4,18 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import org.eclipse.jetty.util.ajax.JSON;
-
-import com.winterwell.es.ESUtils;
 import com.winterwell.es.client.agg.Aggregation;
 import com.winterwell.es.client.agg.Aggregations;
 import com.winterwell.es.client.query.ESQueryBuilder;
 import com.winterwell.es.client.query.ESQueryBuilders;
 import com.winterwell.es.client.sort.Sort;
 import com.winterwell.es.client.suggest.Suggester;
-import com.winterwell.gson.RawJson;
+import com.winterwell.es.client.suggest.Suggesters;
 import com.winterwell.utils.StrUtils;
 import com.winterwell.utils.containers.ArrayMap;
 import com.winterwell.utils.log.Log;
 import com.winterwell.utils.time.Dt;
 import com.winterwell.utils.time.TUnit;
-import com.winterwell.utils.web.SimpleJson;
 
 /**
  * @testedby SearchRequestBuilderTest

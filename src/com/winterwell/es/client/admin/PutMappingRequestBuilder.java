@@ -4,7 +4,6 @@ import com.winterwell.es.ESType;
 import com.winterwell.es.client.ESHttpClient;
 import com.winterwell.es.client.ESHttpRequest;
 import com.winterwell.es.client.IESResponse;
-import com.winterwell.utils.Utils;
 
 /**
  * Ref: https://www.elastic.co/guide/en/elasticsearch/reference/current/indices-put-mapping.html
