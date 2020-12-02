@@ -46,15 +46,17 @@ public class TransformRequestBuilder extends ESHttpRequest<TransformRequestBuild
 	 * This is locked to the `time` field ??do we want more flexibility
 	 * @return this
 	*/
-	public TransformRequestBuilder setBody(String srcIndex, String destIndex, List<String> terms, String interval) {		
-		// counts ??do we want sums in places??
+	public TransformRequestBuilder setBody(String srcIndex, String destIndex, List<String> aggs, List<String> terms, String interval) {		
 		ArrayMap aggregations = new ArrayMap("count", new ArrayMap("sum", new ArrayMap("field", "count")));
+		for (String agg : aggs) {
+			aggregations.put(agg, new ArrayMap("sum", new ArrayMap("field", agg)));
+		}
 
 		ArrayMap group_by = new ArrayMap();
 		for (String term : terms) {
-			group_by.put(term, new ArrayMap("terms", new ArrayMap("field", term)));
+			//group_by.put(term, new ArrayMap("terms", new ArrayMap("field", term)));
 			// for ES version >= 7.10.0, missing_bucket attribute supported to not ignore documents with null field
-			//group_by.put(term, new ArrayMap("terms", new ArrayMap("field", term, "missing_bucket", true)));
+			group_by.put(term, new ArrayMap("terms", new ArrayMap("field", term, "missing_bucket", true)));
 		}
 		if ( ! Utils.isBlank(interval)) {
 			group_by.put("time", new ArrayMap("date_histogram", new ArrayMap(
@@ -74,9 +76,8 @@ public class TransformRequestBuilder extends ESHttpRequest<TransformRequestBuild
 		return this;
 	}
 	
-	// Similar to setBody function, but with painless script support to not ignore documents with null fields
+	// Similar to setBody function, but with painless script support in case for ES version < 7.10.0
 	public TransformRequestBuilder setBodyWithPainless(String srcIndex, String destIndex, List<String> aggs, List<String> terms, String interval) {		
-		// counts ??do we want sums in places??
 		ArrayMap aggregations = new ArrayMap("count", new ArrayMap("sum", new ArrayMap("field", "count")));
 		for (String agg : aggs) {
 			aggregations.put(agg, new ArrayMap("sum", new ArrayMap("field", agg)));
