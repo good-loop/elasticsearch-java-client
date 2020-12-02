@@ -36,7 +36,7 @@ public class TransformRequestBuilder extends ESHttpRequest<TransformRequestBuild
 	}
 	
 	/**
-	 * Set the body of a transform request. Uses count aggregations (what about sum??)
+	 * Set the body of a transform request. Uses sum aggregation
 	 * @param srcIndex index source (where the data comes from)
 	 * @param destIndex index destination (where the aggregated data will go)
 	 * @param terms the terms which you want to group by (i.e. what fields will get kept)
@@ -44,13 +44,50 @@ public class TransformRequestBuilder extends ESHttpRequest<TransformRequestBuild
 	 * This is locked to the `time` field ??do we want more flexibility
 	 * @return this
 	*/
-	public TransformRequestBuilder setBody(String srcIndex, String destIndex, List<String> terms, String interval) {		
-		// counts ??do we want sums in places??
-		ArrayMap aggregations = new ArrayMap("count", new ArrayMap("value_count", new ArrayMap("field", "count")));
+	public TransformRequestBuilder setBody(String srcIndex, String destIndex, List<String> aggs, List<String> terms, String interval) {		
+		ArrayMap aggregations = new ArrayMap("count", new ArrayMap("sum", new ArrayMap("field", "count")));
+		for (String agg : aggs) {
+			aggregations.put(agg, new ArrayMap("sum", new ArrayMap("field", agg)));
+		}
 
 		ArrayMap group_by = new ArrayMap();
 		for (String term : terms) {
-			group_by.put(term, new ArrayMap("terms", new ArrayMap("field", term)));
+			//group_by.put(term, new ArrayMap("terms", new ArrayMap("field", term)));
+			// for ES version >= 7.10.0, missing_bucket attribute supported to not ignore documents with null field
+			group_by.put(term, new ArrayMap("terms", new ArrayMap("field", term, "missing_bucket", true)));
+		}
+		if ( ! Utils.isBlank(interval)) {
+			group_by.put("time", new ArrayMap("date_histogram", new ArrayMap(
+					"field", "time", 
+					"fixed_interval", interval
+					)));
+		}
+		//Map 
+		setBodyMap(new ArrayMap(
+			"source", new ArrayMap("index", srcIndex),
+			"dest", new ArrayMap("index", destIndex),
+			"pivot", new ArrayMap(
+					"group_by", group_by, 
+					"aggregations", aggregations
+					)
+			));
+		return this;
+	}
+	
+	// Similar to setBody function, but with painless script support in case for ES version < 7.10.0
+	public TransformRequestBuilder setBodyWithPainless(String srcIndex, String destIndex, List<String> aggs, List<String> terms, String interval) {		
+		ArrayMap aggregations = new ArrayMap("count", new ArrayMap("sum", new ArrayMap("field", "count")));
+		for (String agg : aggs) {
+			aggregations.put(agg, new ArrayMap("sum", new ArrayMap("field", agg)));
+		}
+
+		ArrayMap group_by = new ArrayMap();
+		String script;
+		for (String term : terms) {
+			script = "if (doc[\u0027"+term+"\u0027].size() == 0) {return \"\";}return doc[\u0027"+term+"\u0027].value;";
+			group_by.put(term, new ArrayMap("terms", new ArrayMap("script", new ArrayMap(
+					"source", script,
+					"lang", "painless"))));
 		}
 		if ( ! Utils.isBlank(interval)) {
 			group_by.put("time", new ArrayMap("date_histogram", new ArrayMap(

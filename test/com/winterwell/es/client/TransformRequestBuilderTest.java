@@ -78,8 +78,11 @@ public class TransformRequestBuilderTest {
 		terms.add("domain");
 		terms.add("os");
 		
+		// specify some terms that we want to sum
+		ArrayList<String> aggs = new ArrayList<String>();
+		
 		// specify source and destination
-		trb.setBody(INDEX, "datalog.transformed", terms, "");
+		trb.setBody(INDEX, "datalog.transformed", aggs, terms, "");
 		trb.setDebug(true);
 		IESResponse response = trb.get();
 		
@@ -101,8 +104,11 @@ public class TransformRequestBuilderTest {
 		terms.add("domain");
 		terms.add("os");
 		
+		// specify some terms that we want to sum
+		ArrayList<String> aggs = new ArrayList<String>();
+		
 		// specify source and destination
-		trb.setBody(INDEX, "datalog.test_transformed", terms, "");
+		trb.setBody(INDEX, "datalog.test_transformed", aggs, terms, "");
 		trb.setDebug(true);
 		IESResponse response = trb.get();
 		assert response.isAcknowledged();
