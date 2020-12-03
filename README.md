@@ -1,6 +1,4 @@
 
-# This Repo has moved to: https://github.com/good-loop/elasticsearch-java-client
-
 # ESJC: elasticsearch-java-client
 
 ESJC is a Java client for using ElasticSearch over the http API.
@@ -11,7 +9,7 @@ ElasticSearch has an internal Java interface (and indeed, an internal low-level 
 
 1. The HTTP API is more stable than the native Java interface.
 2. Using a native Java client can complicate the task of configuring ElasticSearch.
-3. The internal interface and client are tightly bound to the cluster configuration and ES version.
+3. The internal interface and client are tightly bound to the cluster configuration and ES version. This client is more tolerant across version differences.
 
 ## Versions
 
