@@ -15,11 +15,16 @@ import com.winterwell.es.ESPath;
 import com.winterwell.es.client.admin.ClusterAdminClient;
 import com.winterwell.es.client.admin.IndicesAdminClient;
 import com.winterwell.es.client.admin.StatsRequest;
+import com.winterwell.gson.JsonElement;
+import com.winterwell.gson.JsonObject;
+import com.winterwell.gson.JsonParser;
 import com.winterwell.utils.Dep;
 import com.winterwell.utils.Utils;
 import com.winterwell.utils.log.Log;
 import com.winterwell.utils.time.TUnit;
+import com.winterwell.utils.web.SimpleJson;
 import com.winterwell.web.ConfigException;
+import com.winterwell.web.FakeBrowser;
 
 /**
  * This object is thread safe. 
@@ -30,7 +35,22 @@ import com.winterwell.web.ConfigException;
  */
 public class ESHttpClient implements Flushable {
 
-	
+	/**
+	 * 
+	 * @return e.g. "7.10.0"
+	 */
+	public String getESVersion() {
+		FakeBrowser fb = new FakeBrowser();
+		fb.setTimeOut(config.esRequestTimeout); // 1 minute timeout
+		fb.setDebug(debug);
+//		fb.setRequestHeader("Content-Type", "application/json");
+		String json = fb.getPage(config.getESUrl());
+		JsonElement jelement = new JsonParser().parse(json);
+	    JsonObject  jobject = jelement.getAsJsonObject();
+	    jobject = jobject.getAsJsonObject("version");
+	    return jobject.get("number").getAsString();
+	}
+
 	public ESConfig getConfig() {
 		return config;
 	}
