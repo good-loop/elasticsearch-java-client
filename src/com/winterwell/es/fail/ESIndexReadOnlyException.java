@@ -7,10 +7,10 @@ import com.winterwell.web.WebEx;
  * @author daniel
  *
  */
-public class ESIndexReadOnlyException extends WebEx.E404 implements IElasticException {
+public class ESIndexReadOnlyException extends WebEx.E40X implements IElasticException {
 
 	public ESIndexReadOnlyException(WebEx ex) {
-		super(null, "This error may be caused by low disk space vs  ES's flood stage watermark config. See: https://stackoverflow.com/questions/50609417/elasticsearch-error-cluster-block-exception-forbidden-12-index-read-only-all Details: "+ex.getMessage());
+		super(ex.code, null, "This error may be caused by low disk space vs  ES's flood stage watermark config. See: https://stackoverflow.com/questions/50609417/elasticsearch-error-cluster-block-exception-forbidden-12-index-read-only-all Details: "+ex.getMessage());
 	}
 
 	private static final long serialVersionUID = 1L;

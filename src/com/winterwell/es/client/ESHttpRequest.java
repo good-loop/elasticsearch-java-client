@@ -27,6 +27,7 @@ import com.winterwell.utils.web.WebUtils;
 import com.winterwell.utils.web.WebUtils2;
 import com.winterwell.web.FakeBrowser;
 import com.winterwell.web.WebEx;
+import com.winterwell.web.WebEx.E40X;
 
 public class ESHttpRequest<SubClass extends ESHttpRequest, ResponseSubClass extends IESResponse> {
 
@@ -266,6 +267,8 @@ public class ESHttpRequest<SubClass extends ESHttpRequest, ResponseSubClass exte
 
 	/**
 	 * Do it! Use a thread-pool to call async -- immediate response, future result.
+	 * 
+	 * This eventually winds its way back to {@link #doExecute(ESHttpClient)}
 	 */
 	public ListenableFuture<ESHttpResponse> execute() {
 		if (debug) {
@@ -370,13 +373,7 @@ public class ESHttpRequest<SubClass extends ESHttpRequest, ResponseSubClass exte
 			StringBuilder url = getUrl(server);
 
 			// NB: FakeBrowser should close down the IO it uses
-			FakeBrowser fb = new FakeBrowser();			//.setDebug(true);
-			fb.setMaxDownload(-1); // Your data, your bandwidth, your call.
-			fb.setTimeOut(esjc.config.esRequestTimeout); // 1 minute timeout
-			// e.g. HEAD
-			fb.setRequestMethod(method);
-			fb.setDebug(debug);
-			fb.setRequestHeader("Content-Type", "application/json");
+			FakeBrowser fb = fb(esjc);
 			
 			String jsonResult;
 			String srcJson = getBodyJson();
@@ -428,6 +425,17 @@ public class ESHttpRequest<SubClass extends ESHttpRequest, ResponseSubClass exte
 			Thread.currentThread().setName(threadName);
 		}
 	}
+
+	protected FakeBrowser fb(ESHttpClient esjc) {
+		FakeBrowser fb = new FakeBrowser();			//.setDebug(true);
+		fb.setMaxDownload(-1); // Your data, your bandwidth, your call.
+		fb.setTimeOut(esjc.config.esRequestTimeout); // 1 minute timeout
+		// e.g. HEAD
+		fb.setRequestMethod(method);
+		fb.setDebug(debug);
+		fb.setRequestHeader("Content-Type", "application/json");
+		return fb;
+	}
 	
 	private void curlout(String curl) {
 		if (curl==null) return;
@@ -471,6 +479,7 @@ public class ESHttpRequest<SubClass extends ESHttpRequest, ResponseSubClass exte
 	}
 
 	/**
+	 * Convert web exceptions into more helpful ES specific exceptions
 	 * @param ex
 	 * @param req 
 	 * @return
@@ -482,13 +491,22 @@ public class ESHttpRequest<SubClass extends ESHttpRequest, ResponseSubClass exte
 			// e.g. a get for an unstored object (a common case)
 			return new ESDocNotFoundException(getESPath());
 		}
-		// Let's make a super unhelpful error from ES a bit better
+		
+		// (NB: v7.10 improves this) Let's make a super unhelpful error from ES a bit better
 		// See https://stackoverflow.com/questions/50609417/elasticsearch-error-cluster-block-exception-forbidden-12-index-read-only-all
 		if (ex instanceof WebEx.E403 && ex.getMessage().contains("FORBIDDEN/12/index read-only / allow delete")) {
 			return new ESIndexReadOnlyException((WebEx) ex);
 		}
+		
 		if (ex instanceof WebEx.E40X) {
-			String msg = ex.getMessage();
+			WebEx.E40X ex40x = (E40X) ex;
+			String msg = ex40x.getMessage();
+			// ES protects you from running out of hard-drive space, which is nice I guess.
+			if (ex40x.code == 429) {
+				if (msg.contains("disk usage exceeded")) {
+					throw new ESIndexReadOnlyException(ex40x);
+				}
+			}
 			// TODO parse the json errorPage
 			if (msg.contains("mapper_parsing_exception")) {
 				return new ESMapperParsingException(msg);

@@ -12,7 +12,6 @@ import com.google.common.util.concurrent.ListenableFuture;
 import com.google.common.util.concurrent.ListeningExecutorService;
 import com.google.common.util.concurrent.MoreExecutors;
 import com.winterwell.es.ESPath;
-import com.winterwell.es.client.admin.ClusterAdminClient;
 import com.winterwell.es.client.admin.IndicesAdminClient;
 import com.winterwell.es.client.admin.StatsRequest;
 import com.winterwell.gson.JsonElement;
@@ -90,6 +89,9 @@ public class ESHttpClient implements Flushable {
 
 	List<String> servers;
 
+	public List<String> getServers() {
+		return servers;
+	}
 
 	private boolean closed;
 
@@ -123,18 +125,7 @@ public class ESHttpClient implements Flushable {
 	}
 
 	public AdminClient admin() {
-		return new AdminClient();
-	}
-	
-	public final class AdminClient {
-		public IndicesAdminClient indices() {
-			return new IndicesAdminClient(ESHttpClient.this);
-		}
-
-		public ClusterAdminClient cluster() {
-			return new ClusterAdminClient(ESHttpClient.this);
-		}
-		
+		return new AdminClient(this);
 	}
 	
 	/**
