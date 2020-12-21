@@ -433,6 +433,7 @@ public class ESHttpRequest<SubClass extends ESHttpRequest, ResponseSubClass exte
 		// e.g. HEAD
 		fb.setRequestMethod(method);
 		fb.setDebug(debug);
+		// NB: beware of post(String,String) or post(String,Map) which ignore this content-type setting
 		fb.setRequestHeader("Content-Type", "application/json");
 		return fb;
 	}
