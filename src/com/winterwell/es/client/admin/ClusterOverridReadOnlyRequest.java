@@ -53,7 +53,7 @@ curl -XPUT -H "Content-Type: application/json" http://localhost:9200/_all/_setti
 		// HACK
 		url = url.replace("/_cluster/settings", "/_all/_settings"); // why does settings sometimes have "_"? Dunno.
 		String body2 = "{\"index.blocks.read_only_allow_delete\": null}";
-		String got = fb.post(url, FakeBrowser.CONTENT_TYPE_JSON, body2);
+		String got = fb.post(url, "application/json", body2);
 		ESHttpResponse res2 = new ESHttpResponse(this, got);
 		//
 		return res2;
