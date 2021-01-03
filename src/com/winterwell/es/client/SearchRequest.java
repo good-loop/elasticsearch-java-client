@@ -5,6 +5,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
+import com.winterwell.es.client.admin.SearchSettingsRequest;
 import com.winterwell.es.client.agg.Aggregation;
 import com.winterwell.es.client.agg.Aggregations;
 import com.winterwell.es.client.query.ESQueryBuilder;
@@ -227,35 +228,6 @@ public class SearchRequest extends ESHttpRequest<SearchRequest,SearchResponse> {
 	public Integer getSize() {
 		Number n = (Number) params.get("size");
 		return n==null? null : n.intValue();
-	}
-	
-	/**
-	 * See https://www.elastic.co/guide/en/app-search/7.9/search-fields-weights.html
-	 * @param fields
-	 */
-	public void setSearchFields(List<String> fields) {
-		Map<String, Object> b = body();
-		ArrayMap fs = new ArrayMap();
-		for (String f : fields) {
-			fs.put(f, Collections.EMPTY_MAP);
-		}
-		b.put("search_fields", fs);
-	}
-	
-	/**
-	 * See https://www.elastic.co/guide/en/app-search/7.9/search-fields-weights.html
-	 * Weights are from 10 (most relevant) to 1 (least relevant).
-	 */
-	public void setSearchFields(Map<String,Number> field2weight) {
-		Map<String, Object> b = body();
-		ArrayMap fs = new ArrayMap();
-		for (String f : field2weight.keySet()) {
-			Number w = field2weight.get(f);
-			int wi = w.intValue();
-			if (wi < 1 || wi > 10) throw new IllegalArgumentException("Weight must be in [1,10] "+field2weight);
-			fs.put(f, new ArrayMap("weight", wi));
-		}
-		b.put("search_fields", fs);
 	}
 	
 }

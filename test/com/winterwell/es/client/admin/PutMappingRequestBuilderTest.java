@@ -14,7 +14,7 @@ import com.winterwell.utils.containers.ArrayMap;
 public class PutMappingRequestBuilderTest extends ESTest {
 
 	@Test
-	public void testPutMappingRequestBuilder() {
+	public String testPutMappingRequestBuilder() {
 		ESHttpClient esjc = getESJC();		
 		// make an index
 		String v = Utils.getRandomString(3);
@@ -33,7 +33,8 @@ public class PutMappingRequestBuilderTest extends ESTest {
 		pm.setDebug(true);
 		
 		IESResponse resp = pm.get().check();
-		Printer.out(resp.getJson());				
+		Printer.out(resp.getJson());	
+		return idx;
 	}
 	
 	

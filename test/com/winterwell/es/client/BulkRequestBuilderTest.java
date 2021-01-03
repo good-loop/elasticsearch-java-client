@@ -96,7 +96,7 @@ public class BulkRequestBuilderTest extends ESTest {
 		BulkRequest bulk = esc.prepareBulk();
 		for(int i=0; i<100; i++) {
 			IndexRequest pi = esc.prepareIndex(INDEX, "simple", "s_"+i);			
-			pi.setBodyMap(new ArrayMap("k", ""+i));
+			pi.setBodyMap(new ArrayMap("k", ""+i, "name", "name"+i));
 			bulk.add(pi);
 			ids.add("s_"+i);
 		}		
