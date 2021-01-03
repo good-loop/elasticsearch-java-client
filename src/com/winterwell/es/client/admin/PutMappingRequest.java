@@ -11,17 +11,17 @@ import com.winterwell.es.client.IESResponse;
  * @author daniel
  * @testedby  PutMappingRequestBuilderTest}
  */
-public class PutMappingRequestBuilder extends ESHttpRequest<PutMappingRequestBuilder,IESResponse> {
+public class PutMappingRequest extends ESHttpRequest<PutMappingRequest,IESResponse> {
 	
 	
-	public PutMappingRequestBuilder(ESHttpClient hClient, String idx, String type) {
+	public PutMappingRequest(ESHttpClient hClient, String idx, String type) {
 		super(hClient, "_mapping");
 		setIndex(idx);
 		method = "PUT";
 		setType(type); //null); // no mapping types in ESv7
 	}
 
-	public PutMappingRequestBuilder setMapping(ESType type) {
+	public PutMappingRequest setMapping(ESType type) {
 		body().putAll(type);
 		return this;
 	}

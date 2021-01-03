@@ -10,10 +10,10 @@ import com.winterwell.utils.containers.ArrayMap;
  * See https://www.elastic.co/guide/en/elasticsearch/reference/7.9/transforms.html
  * @testedby TransformRequestBuilderTest
  */
-public class TransformRequestBuilder extends ESHttpRequest<TransformRequestBuilder, IESResponse> {
+public class TransformRequest extends ESHttpRequest<TransformRequest, IESResponse> {
 	
 	/** called when a transform preview is requested */
-	public TransformRequestBuilder(ESHttpClient esHttpClient) {
+	public TransformRequest(ESHttpClient esHttpClient) {
 		super(esHttpClient, "_transform/_preview");
 		setIndex(null); 
 		method = "POST";
@@ -25,7 +25,7 @@ public class TransformRequestBuilder extends ESHttpRequest<TransformRequestBuild
 	 * This identifier can contain lowercase alphanumeric characters (a-z and 0-9), 
 	 * hyphens, and underscores. It must start and end with alphanumeric characters
 	 * */
-	public TransformRequestBuilder(ESHttpClient esHttpClient, String transform_job, String request) {
+	public TransformRequest(ESHttpClient esHttpClient, String transform_job, String request) {
 		super(esHttpClient, "_transform/"+transform_job);
 //		// Check job name conforms
 //		if ( ! Pattern.matches("[a-z0-9][a-z0-9_\\-]*", transform_job)) {
@@ -44,7 +44,7 @@ public class TransformRequestBuilder extends ESHttpRequest<TransformRequestBuild
 	 * This is locked to the `time` field ??do we want more flexibility
 	 * @return this
 	*/
-	public TransformRequestBuilder setBody(String srcIndex, String destIndex, List<String> aggs, List<String> terms, String interval) {		
+	public TransformRequest setBody(String srcIndex, String destIndex, List<String> aggs, List<String> terms, String interval) {		
 		ArrayMap aggregations = new ArrayMap("count", new ArrayMap("sum", new ArrayMap("field", "count")));
 		for (String agg : aggs) {
 			aggregations.put(agg, new ArrayMap("sum", new ArrayMap("field", agg)));
@@ -75,7 +75,7 @@ public class TransformRequestBuilder extends ESHttpRequest<TransformRequestBuild
 	}
 	
 	// Similar to setBody function, but with painless script support in case for ES version < 7.10.0
-	public TransformRequestBuilder setBodyWithPainless(String srcIndex, String destIndex, List<String> aggs, List<String> terms, String interval) {		
+	public TransformRequest setBodyWithPainless(String srcIndex, String destIndex, List<String> aggs, List<String> terms, String interval) {		
 		ArrayMap aggregations = new ArrayMap("count", new ArrayMap("sum", new ArrayMap("field", "count")));
 		for (String agg : aggs) {
 			aggregations.put(agg, new ArrayMap("sum", new ArrayMap("field", agg)));

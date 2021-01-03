@@ -26,7 +26,7 @@ public class ReindexRequestTest {
 		pi2.setRefresh(KRefresh.TRUE);
 		pi2.get();
 		
-		IndexRequestBuilder i1 = es.prepareIndex("test1", "testtype", "testid1");
+		IndexRequest i1 = es.prepareIndex("test1", "testtype", "testid1");
 		i1.setBodyMap(new ArrayMap("msg", "Hello World! for "+i2));
 		i1.setRefresh(KRefresh.TRUE);
 		i1.get();
@@ -36,7 +36,7 @@ public class ReindexRequestTest {
 		IESResponse resp = rr.get();
 		resp.check();
 
-		GetRequestBuilder srb = new GetRequestBuilder(es).setIndex(i2).setId("testid1");
+		GetRequest srb = new GetRequest(es).setIndex(i2).setId("testid1");
 		srb.setDebug(true);
 		GetResponse sr = srb.get();
 		sr.check();		

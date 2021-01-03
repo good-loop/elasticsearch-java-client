@@ -26,7 +26,7 @@ public class GetRequestBuilderTest extends ESTest {
 		Utils.sleep(100);					
 		
 		// now index an item
-		IndexRequestBuilder irb = esjc.prepareIndex(idx, "test_id_1");
+		IndexRequest irb = esjc.prepareIndex(idx, "test_id_1");
 		irb.setBodyDoc(new ArrayMap(
 			"foo", "hello",
 			"bar", "world"
@@ -47,7 +47,7 @@ public class GetRequestBuilderTest extends ESTest {
 		Utils.sleep(100);					
 		
 		// now index an item
-		IndexRequestBuilder irb = esjc.prepareIndex(idx, "test_id_1");
+		IndexRequest irb = esjc.prepareIndex(idx, "test_id_1");
 		irb.setBodyDoc(new ArrayMap(
 			"foo", "hello",
 			"bar", "world"
@@ -59,7 +59,7 @@ public class GetRequestBuilderTest extends ESTest {
 		Utils.sleep(1000);
 		
 		// and fetch it		
-		GetRequestBuilder gr = new GetRequestBuilder(esjc);
+		GetRequest gr = new GetRequest(esjc);
 		gr.setDebug(true);
 		gr.setIndex(idx).setId("test_id_1");
 		GetResponse r = (GetResponse) gr.get().check();
@@ -74,7 +74,7 @@ public class GetRequestBuilderTest extends ESTest {
 		
 		// now get one
 		ESHttpClient esc = Dep.get(ESHttpClient.class);
-		GetRequestBuilder srb = new GetRequestBuilder(esc).setIndex(brbt.INDEX).setId(ids.get(0));
+		GetRequest srb = new GetRequest(esc).setIndex(brbt.INDEX).setId(ids.get(0));
 		srb.setDebug(true);
 		GetResponse sr = srb.get();
 		sr.check();		
@@ -91,7 +91,7 @@ public class GetRequestBuilderTest extends ESTest {
 			UtilsForESTests.init();
 			// now get one
 			ESHttpClient esc = Dep.get(ESHttpClient.class);
-			GetRequestBuilder srb = new GetRequestBuilder(esc).setIndex(brbt.INDEX).setId("no_nevermadethisthingever");
+			GetRequest srb = new GetRequest(esc).setIndex(brbt.INDEX).setId("no_nevermadethisthingever");
 			srb.setDebug(true);
 			GetResponse sr = srb.get();
 			assert ! sr.isSuccess();

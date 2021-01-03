@@ -19,12 +19,12 @@ import com.winterwell.utils.containers.Containers;
  * @author daniel
  *
  */
-public class MultiGetRequestBuilder extends ESHttpRequest<MultiGetRequestBuilder, IESResponse> {
+public class MultiGetRequest extends ESHttpRequest<MultiGetRequest, IESResponse> {
 	
 	boolean sourceOnly;
 	private List<ESPath> docs = new ArrayList();
 
-	public MultiGetRequestBuilder(ESHttpClient hClient) {
+	public MultiGetRequest(ESHttpClient hClient) {
 		super(hClient, "_mget");
 		method = "POST";
 		// make the body map now - otherwise doExecute() won't call #body() when needed
@@ -32,7 +32,7 @@ public class MultiGetRequestBuilder extends ESHttpRequest<MultiGetRequestBuilder
 	}
 	
 	@Override
-	public MultiGetRequestBuilder setId(String id) {
+	public MultiGetRequest setId(String id) {
 		throw new UnsupportedOperationException("Use addDoc instead");
 	}
 	
@@ -40,7 +40,7 @@ public class MultiGetRequestBuilder extends ESHttpRequest<MultiGetRequestBuilder
 	 * 
 	 * @param doc id is necessary; type and index can be specified in doc OR on the request (i.e. once for all docs).
 	 */
-	public MultiGetRequestBuilder addDoc(ESPath doc) {
+	public MultiGetRequest addDoc(ESPath doc) {
 		docs.add(doc);
 		return this;
 	}
@@ -66,7 +66,7 @@ public class MultiGetRequestBuilder extends ESHttpRequest<MultiGetRequestBuilder
 	 * See http://www.elasticsearch.org/guide/en/elasticsearch/reference/current/docs-get.html#get-source-filtering
 	 * @return 
 	 */
-	public MultiGetRequestBuilder setResultsSourceExclude(String... excluded) {
+	public MultiGetRequest setResultsSourceExclude(String... excluded) {
 		params.put("_source_exclude", StrUtils.join(excluded, ","));
 		return this;
 	}
@@ -75,7 +75,7 @@ public class MultiGetRequestBuilder extends ESHttpRequest<MultiGetRequestBuilder
 	 * See http://www.elasticsearch.org/guide/en/elasticsearch/reference/current/docs-get.html#get-source-filtering
 	 * @return 
 	 */
-	public MultiGetRequestBuilder setResultsSourceInclude(String... included) {
+	public MultiGetRequest setResultsSourceInclude(String... included) {
 		params.put("_source_include", StrUtils.join(included, ","));
 		return this;
 	}
@@ -87,7 +87,7 @@ public class MultiGetRequestBuilder extends ESHttpRequest<MultiGetRequestBuilder
      * a custom value, which guarantees that the same order will be used across different requests.
      * @param preference e.g. "_local"
      */
-    public MultiGetRequestBuilder setPreference(String preference) {
+    public MultiGetRequest setPreference(String preference) {
     	params.put("preference", preference);
         return this;
     }
@@ -102,7 +102,7 @@ public class MultiGetRequestBuilder extends ESHttpRequest<MultiGetRequestBuilder
      * If true, only return the item _source json, without the surrounding score and other metadata.
      * @return 
      */
-	public MultiGetRequestBuilder setSourceOnly(boolean b) {
+	public MultiGetRequest setSourceOnly(boolean b) {
 		sourceOnly = b;
 		return this;
 	}

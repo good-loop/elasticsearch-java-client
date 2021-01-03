@@ -3,13 +3,13 @@ package com.winterwell.es.client;
 /**
  * Index (store) a document.
  */
-public class IndexRequestBuilder extends ESHttpRequest<IndexRequestBuilder, IESResponse> {
+public class IndexRequest extends ESHttpRequest<IndexRequest, IESResponse> {
 
 	/**
 	 * Which index? You must call {@link #setIndex(String)} or {@link #setIndices(String...)} before use!
 	 * @param esHttpClient
 	 */
-	public IndexRequestBuilder(ESHttpClient esHttpClient) {
+	public IndexRequest(ESHttpClient esHttpClient) {
 		super(esHttpClient, null);
 		method = "POST";
 		bulkOpName = "index";
@@ -24,7 +24,7 @@ public class IndexRequestBuilder extends ESHttpRequest<IndexRequestBuilder, IESR
 	 * @return this
 	 * @see #setBodyJson(String)
 	 */
-	public IndexRequestBuilder setBodyDoc(Object doc) throws IllegalStateException {
+	public IndexRequest setBodyDoc(Object doc) throws IllegalStateException {
 		String json = gson().toJson(doc);
 		setBodyJson(json);
 		return this;

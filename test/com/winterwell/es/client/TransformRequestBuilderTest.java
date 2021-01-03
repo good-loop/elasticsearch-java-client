@@ -7,7 +7,7 @@ import org.junit.Test;
 
 import com.winterwell.es.ESType;
 import com.winterwell.es.client.admin.CreateIndexRequest;
-import com.winterwell.es.client.admin.PutMappingRequestBuilder;
+import com.winterwell.es.client.admin.PutMappingRequest;
 import com.winterwell.es.fail.ESIndexAlreadyExistsException;
 import com.winterwell.gson.FlexiGson;
 import com.winterwell.utils.Dep;
@@ -32,7 +32,7 @@ public class TransformRequestBuilderTest {
 			cir.get().check();
 			Utils.sleep(100);
 			// set properties mapping
-			PutMappingRequestBuilder pm = esc.admin().indices().preparePutMapping(INDEX);
+			PutMappingRequest pm = esc.admin().indices().preparePutMapping(INDEX);
 			ESType mytype = new ESType()
 					.property("domain", ESType.keyword)
 					.property("os", ESType.keyword)
@@ -46,9 +46,9 @@ public class TransformRequestBuilderTest {
 			Printer.out("Index already exists, proceeding...");
 		}
 		
-		BulkRequestBuilder bulk = esc.prepareBulk();
+		BulkRequest bulk = esc.prepareBulk();
 		
-		IndexRequestBuilder pi = esc.prepareIndex(INDEX, "s_0");			
+		IndexRequest pi = esc.prepareIndex(INDEX, "s_0");			
 		pi.setBodyMap(new ArrayMap("domain", "good-loop.com", "os", "linux", "browser", "firefox", "count", 1));
 		bulk.add(pi);
 		
@@ -71,7 +71,7 @@ public class TransformRequestBuilderTest {
 		Dep.setIfAbsent(ESConfig.class, new ESConfig());
 		if ( ! Dep.has(ESHttpClient.class)) Dep.setSupplier(ESHttpClient.class, false, ESHttpClient::new);
 		ESHttpClient esc = Dep.get(ESHttpClient.class);
-		TransformRequestBuilder trb = esc.prepareTransformPreview();
+		TransformRequest trb = esc.prepareTransformPreview();
 		
 		// specify some terms that we want to keep
 		ArrayList<String> terms = new ArrayList<String>();
@@ -97,7 +97,7 @@ public class TransformRequestBuilderTest {
 		if ( ! Dep.has(ESHttpClient.class)) Dep.setSupplier(ESHttpClient.class, false, ESHttpClient::new);
 		ESHttpClient esc = Dep.get(ESHttpClient.class);
 		
-		TransformRequestBuilder trb = esc.prepareTransform("transform_testjob"); //transform_testjob is the job ID
+		TransformRequest trb = esc.prepareTransform("transform_testjob"); //transform_testjob is the job ID
 		
 		// specify some terms that we want to keep
 		ArrayList<String> terms = new ArrayList<String>();
@@ -114,20 +114,20 @@ public class TransformRequestBuilderTest {
 		assert response.isAcknowledged();
 		
 		// start transform job
-		TransformRequestBuilder trb2 = esc.prepareTransformStart("transform_testjob"); 
+		TransformRequest trb2 = esc.prepareTransformStart("transform_testjob"); 
 		trb2.setDebug(true);
 		IESResponse response2 = trb2.get();
 		assert response2.isAcknowledged();
 		
 		// stop transform job
 		Utils.sleep(2000);
-		TransformRequestBuilder trb3 = esc.prepareTransformStop("transform_testjob"); 
+		TransformRequest trb3 = esc.prepareTransformStop("transform_testjob"); 
 		trb3.setDebug(true);
 		IESResponse response3 = trb3.get();
 		assert response3.isAcknowledged();
 		
 		// delete transform job
-		TransformRequestBuilder trb4 = esc.prepareTransformDelete("transform_testjob"); 
+		TransformRequest trb4 = esc.prepareTransformDelete("transform_testjob"); 
 		trb4.setDebug(true);
 		IESResponse response4 = trb4.get();
 		assert response4.isAcknowledged();

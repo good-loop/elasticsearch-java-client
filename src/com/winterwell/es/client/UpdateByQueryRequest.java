@@ -6,7 +6,7 @@ import com.winterwell.es.client.query.ESQueryBuilder;
 import com.winterwell.es.client.query.ESQueryBuilders;
 import com.winterwell.utils.ReflectionUtils;
 
-public class UpdateByQueryRequestBuilder extends UpdateRequestBuilder {
+public class UpdateByQueryRequest extends UpdateRequest {
 
 
 	@Override
@@ -14,7 +14,7 @@ public class UpdateByQueryRequestBuilder extends UpdateRequestBuilder {
 		if (indices==null || indices.size()==0) throw new IllegalStateException("No index specified for update: "+this);	
 	}
 	
-	public UpdateByQueryRequestBuilder(ESHttpClient hClient) {
+	public UpdateByQueryRequest(ESHttpClient hClient) {
 		super(hClient);
 		ReflectionUtils.setPrivateField(this, "endpoint", "_update_by_query");
 	}
@@ -28,7 +28,7 @@ public class UpdateByQueryRequestBuilder extends UpdateRequestBuilder {
 	 * @param qb
 	 * @return 
 	 */
-	public UpdateByQueryRequestBuilder addQuery(ESQueryBuilder qb) {
+	public UpdateByQueryRequest addQuery(ESQueryBuilder qb) {
 		Map query = (Map) body().get("query");
 		if (query==null) {
 			setQuery(qb);
@@ -52,11 +52,11 @@ public class UpdateByQueryRequestBuilder extends UpdateRequestBuilder {
 	 * @param qb Cannot be modified afterwards.
 	 * @return
 	 */
-	public UpdateByQueryRequestBuilder setQuery(ESQueryBuilder qb) {
+	public UpdateByQueryRequest setQuery(ESQueryBuilder qb) {
 		return setQuery(qb.toJson2());
 	}
 
-	public UpdateByQueryRequestBuilder setQuery(Map queryJson) {
+	public UpdateByQueryRequest setQuery(Map queryJson) {
 		body().put("query", queryJson);
 		return this;
 	}

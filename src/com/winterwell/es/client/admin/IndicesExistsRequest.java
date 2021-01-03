@@ -8,9 +8,9 @@ import com.winterwell.es.client.IESResponse;
  * @author daniel
  *
  */
-public class IndicesExistsRequestBuilder extends ESHttpRequest<IndicesExistsRequestBuilder,IESResponse> {
+public class IndicesExistsRequest extends ESHttpRequest<IndicesExistsRequest,IESResponse> {
 
-	public IndicesExistsRequestBuilder(IndicesAdminClient iac) {
+	public IndicesExistsRequest(IndicesAdminClient iac) {
 		super(iac.hClient, null);
 		method = "HEAD";
 	}

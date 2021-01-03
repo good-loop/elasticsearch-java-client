@@ -19,7 +19,7 @@ public class SearchScrollRequestBuilderTest extends ESTest {
 		
 		// now search them
 		ESHttpClient esc = Dep.get(ESHttpClient.class);
-		SearchRequestBuilder srb = esc.prepareSearch(brbt.INDEX);
+		SearchRequest srb = esc.prepareSearch(brbt.INDEX);
 		srb.setScroll(TUnit.MINUTE.dt);
 		srb.setDebug(true);
 		SearchResponse sr = srb.get();
@@ -40,7 +40,7 @@ public class SearchScrollRequestBuilderTest extends ESTest {
 		}		
 		
 		while(true) {
-			SearchScrollRequestBuilder ss = esc.prepareSearchScroll(scrollId);
+			SearchScrollRequest ss = esc.prepareSearchScroll(scrollId);
 			ss.setScroll(TUnit.MINUTE.dt);
 			SearchResponse got = ss.get();
 			got.check();

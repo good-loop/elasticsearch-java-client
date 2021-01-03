@@ -23,7 +23,7 @@ public class DeleteRequestBuilderTest extends ESTest {
 		}
 		
 		// now index an item
-		IndexRequestBuilder irb = esjc.prepareIndex(idx, "test_id_1");
+		IndexRequest irb = esjc.prepareIndex(idx, "test_id_1");
 		irb.setBodyDoc(new ArrayMap(
 			"foo", "hello",
 			"bar", "world"
@@ -35,14 +35,14 @@ public class DeleteRequestBuilderTest extends ESTest {
 		Utils.sleep(1000);
 		
 		// and fetch it		
-		GetRequestBuilder gr = new GetRequestBuilder(esjc);
+		GetRequest gr = new GetRequest(esjc);
 		gr.setDebug(true);
 		gr.setIndex(idx).setId("test_id_1");
 		GetResponse r = (GetResponse) gr.get().check();
 		System.out.println(r.getSourceAsMap());
 		
 		// and delete it!
-		DeleteRequestBuilder drb = new DeleteRequestBuilder(esjc);
+		DeleteRequest drb = new DeleteRequest(esjc);
 		drb.setIndex(idx).setId("test_id_1");
 		drb.setDebug(true);
 		drb.get().check();
@@ -50,7 +50,7 @@ public class DeleteRequestBuilderTest extends ESTest {
 		Utils.sleep(100);
 
 		try {
-			GetRequestBuilder gr2 = new GetRequestBuilder(esjc);
+			GetRequest gr2 = new GetRequest(esjc);
 			gr2.setIndex(idx).setId("test_id_1");
 			GetResponse r2 = (GetResponse) gr2.get().check();
 			assert false : r2.getJson();
@@ -74,7 +74,7 @@ public class DeleteRequestBuilderTest extends ESTest {
 				
 		// and delete it!?
 		try {
-			DeleteRequestBuilder drb = new DeleteRequestBuilder(esjc);
+			DeleteRequest drb = new DeleteRequest(esjc);
 			drb.setIndex(idx).setId("test_id_never88");
 			drb.setDebug(true);
 			IESResponse res = drb.get().check();
@@ -98,7 +98,7 @@ public class DeleteRequestBuilderTest extends ESTest {
 				
 		// and delete it!?
 		ESPath path = new ESPath(idx, "test_id_never89");
-		DeleteRequestBuilder drb = esjc.prepareDelete(path);
+		DeleteRequest drb = esjc.prepareDelete(path);
 		drb.setDebug(true);
 		IESResponse res = drb.get().check();
 		System.out.println(res);

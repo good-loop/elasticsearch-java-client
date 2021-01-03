@@ -43,23 +43,23 @@ public class IndicesAdminClient {
 	 * @param idx The index
 	 * @param type 
 	 */
-	public PutMappingRequestBuilder preparePutMapping(String idx, String type) {
-		return new PutMappingRequestBuilder(hClient, idx, type);
+	public PutMappingRequest preparePutMapping(String idx, String type) {
+		return new PutMappingRequest(hClient, idx, type);
 	}
 	
 	/**
 	 * Sets field.type info for the index
 	 * @param idx The index
 	 */
-	public PutMappingRequestBuilder preparePutMapping(String idx) {
-		return new PutMappingRequestBuilder(hClient, idx, null);
+	public PutMappingRequest preparePutMapping(String idx) {
+		return new PutMappingRequest(hClient, idx, null);
 	}
 	
 	/**
      * Deletes mapping definition for a type into one or more indices.
      */
-    public DeleteMappingRequestBuilder prepareDeleteMapping(String... indices) {
-		return new DeleteMappingRequestBuilder(hClient, indices);
+    public DeleteMappingRequest prepareDeleteMapping(String... indices) {
+		return new DeleteMappingRequest(hClient, indices);
 	}
 
 
@@ -71,12 +71,12 @@ public class IndicesAdminClient {
     }
     
 	/**
-	 * Convenience for calling {@link IndicesExistsRequestBuilder}
+	 * Convenience for calling {@link IndicesExistsRequest}
 	 * @param index
 	 * @return true if the index exists
 	 */
 	public boolean indexExists(String index) {
-		IESResponse ok = new IndicesExistsRequestBuilder(this).setIndex(index).get();
+		IESResponse ok = new IndicesExistsRequest(this).setIndex(index).get();
 		return ok.isSuccess();
 	}
 

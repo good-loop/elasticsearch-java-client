@@ -68,7 +68,7 @@ public class PainlessScriptBuilderTest extends ESTest  {
 			.setRefresh("true")
 			.get();
 		
-		UpdateRequestBuilder up = esjc.prepareUpdate(path);
+		UpdateRequest up = esjc.prepareUpdate(path);
 		up.setRefresh(KRefresh.TRUE);
 		up.setScript(psb);
 		up.setDebug(true);
@@ -101,7 +101,7 @@ public class PainlessScriptBuilderTest extends ESTest  {
 				"n", Arrays.asList(10, 20));
 		psb.setJsonObject(jsonObject);
 		
-		UpdateRequestBuilder up = esjc.prepareUpdate(path);
+		UpdateRequest up = esjc.prepareUpdate(path);
 		up.setRefresh(KRefresh.TRUE);
 		up.setScript(psb);
 		up.setDebug(true);
@@ -151,7 +151,7 @@ public class PainlessScriptBuilderTest extends ESTest  {
 		PainlessScriptBuilder psb = PainlessScriptBuilder.fromJsonPatchOps(diffs);
 		Printer.out(psb.toString());
 		
-		UpdateRequestBuilder up = esjc.prepareUpdate(path);
+		UpdateRequest up = esjc.prepareUpdate(path);
 		up.setRefresh(KRefresh.TRUE);
 		up.setScript(psb);
 		up.setDebug(true);
@@ -209,7 +209,7 @@ public class PainlessScriptBuilderTest extends ESTest  {
 		PainlessScriptBuilder psb = PainlessScriptBuilder.fromJsonPatchOps(diffs);
 		Printer.out(psb.toString());
 		
-		UpdateRequestBuilder up = esjc.prepareUpdate(path);
+		UpdateRequest up = esjc.prepareUpdate(path);
 		up.setRefresh(KRefresh.TRUE);
 		up.setScript(psb);
 		up.setDebug(true);

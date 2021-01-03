@@ -5,14 +5,14 @@ import java.util.List;
 
 import com.winterwell.utils.StrUtils;
 
-public class ClearScrollRequestBuilder extends ESHttpRequest<ClearScrollRequestBuilder, IESResponse> {
+public class ClearScrollRequest extends ESHttpRequest<ClearScrollRequest, IESResponse> {
 
-	public ClearScrollRequestBuilder(ESHttpClient esHttpClient) {
+	public ClearScrollRequest(ESHttpClient esHttpClient) {
 		super(esHttpClient, "_search/scroll");
 		method = "DELETE";
 	}
 
-	public ClearScrollRequestBuilder setScrollIds(List<String> asList) {
+	public ClearScrollRequest setScrollIds(List<String> asList) {
 		params.put("scroll_id", StrUtils.join(asList, ","));
 		return this;
 	}
@@ -21,11 +21,11 @@ public class ClearScrollRequestBuilder extends ESHttpRequest<ClearScrollRequestB
 	 * @deprecated Use {@link #setScrollIds(List)}
 	 */
 	@Override
-	public ClearScrollRequestBuilder setId(String id) {
+	public ClearScrollRequest setId(String id) {
 		throw new IllegalStateException("You want setScrollIds");
 	}
 
-	public ClearScrollRequestBuilder setScrollId(String scrollId) {
+	public ClearScrollRequest setScrollId(String scrollId) {
 		return setScrollIds(Arrays.asList(scrollId));
 	}
 }

@@ -6,7 +6,7 @@ import com.winterwell.es.ESTest;
 import com.winterwell.es.ESType;
 import com.winterwell.es.client.ESHttpClient;
 import com.winterwell.es.client.IESResponse;
-import com.winterwell.es.client.IndexRequestBuilder;
+import com.winterwell.es.client.IndexRequest;
 import com.winterwell.utils.Printer;
 import com.winterwell.utils.Utils;
 import com.winterwell.utils.containers.ArrayMap;
@@ -25,7 +25,7 @@ public class PutMappingRequestBuilderTest extends ESTest {
 				
 		// set a mapping
 		String type = "mytype";
-		PutMappingRequestBuilder pm = esjc.admin().indices().preparePutMapping(idx, type);
+		PutMappingRequest pm = esjc.admin().indices().preparePutMapping(idx, type);
 		ESType mytype = new ESType()
 				.property("foo", ESType.keyword)
 				.property("bar", new ESType().text());
@@ -50,7 +50,7 @@ public class PutMappingRequestBuilderTest extends ESTest {
 				
 		// set a mapping
 		String type = "mytype";
-		PutMappingRequestBuilder pm = esjc.admin().indices().preparePutMapping(idx);
+		PutMappingRequest pm = esjc.admin().indices().preparePutMapping(idx);
 		ESType mytype = new ESType()
 				.property("foo", ESType.keyword)
 				.property("bar", new ESType().text());
@@ -74,7 +74,7 @@ public class PutMappingRequestBuilderTest extends ESTest {
 		Utils.sleep(100);					
 				
 		// set a mapping
-		PutMappingRequestBuilder pm = esjc.admin().indices().preparePutMapping(idx);
+		PutMappingRequest pm = esjc.admin().indices().preparePutMapping(idx);
 		ESType mytype = new ESType()
 				.property("foo", ESType.keyword)
 				.property("bar", new ESType().text());
@@ -84,7 +84,7 @@ public class PutMappingRequestBuilderTest extends ESTest {
 		IESResponse resp = pm.get().check();
 		
 		// now index an item
-		IndexRequestBuilder irb = esjc.prepareIndex(idx, "test_id_1");
+		IndexRequest irb = esjc.prepareIndex(idx, "test_id_1");
 		irb.setBodyDoc(new ArrayMap(
 			"foo", "hello",
 			"bar", "world"
@@ -106,7 +106,7 @@ public class PutMappingRequestBuilderTest extends ESTest {
 		Utils.sleep(100);					
 				
 		// set a mapping
-		PutMappingRequestBuilder pm = esjc.admin().indices().preparePutMapping(idx);
+		PutMappingRequest pm = esjc.admin().indices().preparePutMapping(idx);
 		ESType mytype = new ESType()
 				.property("foo", ESType.keyword)
 				.property("bar", new ESType().INTEGER());
@@ -117,7 +117,7 @@ public class PutMappingRequestBuilderTest extends ESTest {
 		
 		// now index an item
 		try {
-			IndexRequestBuilder irb = esjc.prepareIndex(idx, "test_id_1");
+			IndexRequest irb = esjc.prepareIndex(idx, "test_id_1");
 			irb.setBodyDoc(new ArrayMap(
 				"foo", true,
 				"bar", "Not a number"

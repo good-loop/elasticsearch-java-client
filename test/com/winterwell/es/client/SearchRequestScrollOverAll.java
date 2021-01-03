@@ -10,10 +10,10 @@ import com.winterwell.utils.time.Dt;
 public class SearchRequestScrollOverAll implements Iterable<List<Map>> {
 
 	private final ESHttpClient client;
-	private final SearchRequestBuilder request;
+	private final SearchRequest request;
 	private int size;
 
-	public SearchRequestScrollOverAll(ESHttpClient client, SearchRequestBuilder request, Dt keepAliveDuration) {
+	public SearchRequestScrollOverAll(ESHttpClient client, SearchRequest request, Dt keepAliveDuration) {
 		this.client = client;
 		request.setScroll(keepAliveDuration);
 		this.request = request;

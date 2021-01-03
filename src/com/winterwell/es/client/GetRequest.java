@@ -7,11 +7,11 @@ import com.winterwell.utils.StrUtils;
  * @author daniel
  *
  */
-public class GetRequestBuilder extends ESHttpRequest<GetRequestBuilder,GetResponse> {
+public class GetRequest extends ESHttpRequest<GetRequest,GetResponse> {
 	
 	boolean sourceOnly;
 
-	public GetRequestBuilder(ESHttpClient hClient) {
+	public GetRequest(ESHttpClient hClient) {
 		super(hClient, null);
 		setType("_doc"); // the new ESv7 omni-type
 	}
@@ -22,7 +22,7 @@ public class GetRequestBuilder extends ESHttpRequest<GetRequestBuilder,GetRespon
 	 * See http://www.elasticsearch.org/guide/en/elasticsearch/reference/current/docs-get.html#get-source-filtering
 	 * @return 
 	 */
-	public GetRequestBuilder setResultsSourceExclude(String... excluded) {
+	public GetRequest setResultsSourceExclude(String... excluded) {
 		params.put("_source_exclude", StrUtils.join(excluded, ","));
 		return this;
 	}
@@ -31,7 +31,7 @@ public class GetRequestBuilder extends ESHttpRequest<GetRequestBuilder,GetRespon
 	 * See http://www.elasticsearch.org/guide/en/elasticsearch/reference/current/docs-get.html#get-source-filtering
 	 * @return 
 	 */
-	public GetRequestBuilder setResultsSourceInclude(String... included) {
+	public GetRequest setResultsSourceInclude(String... included) {
 		params.put("_source_include", StrUtils.join(included, ","));
 		return this;
 	}
@@ -43,7 +43,7 @@ public class GetRequestBuilder extends ESHttpRequest<GetRequestBuilder,GetRespon
      * a custom value, which guarantees that the same order will be used across different requests.
      * @param preference e.g. "_local"
      */
-    public GetRequestBuilder setPreference(String preference) {
+    public GetRequest setPreference(String preference) {
     	params.put("preference", preference);
         return this;
     }
@@ -61,7 +61,7 @@ public class GetRequestBuilder extends ESHttpRequest<GetRequestBuilder,GetRespon
      * If true, only return the item _source json, without the surrounding score and other metadata.
      * @return 
      */
-	public GetRequestBuilder setSourceOnly(boolean b) {
+	public GetRequest setSourceOnly(boolean b) {
 		sourceOnly = b;
 		return this;
 	}

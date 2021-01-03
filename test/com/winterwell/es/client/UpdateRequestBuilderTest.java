@@ -25,7 +25,7 @@ public class UpdateRequestBuilderTest extends ESTest {
 		Utils.sleep(100);					
 		
 		// now index an item
-		IndexRequestBuilder irb = esjc.prepareIndex(idx, "test_id_1");
+		IndexRequest irb = esjc.prepareIndex(idx, "test_id_1");
 		irb.setBodyDoc(new ArrayMap(
 			"foo", "hello",
 			"bar", "world"
@@ -37,7 +37,7 @@ public class UpdateRequestBuilderTest extends ESTest {
 		
 		// and update it
 		ESPath path = new ESPath(idx, "test_id_1");
-		UpdateRequestBuilder up = esjc.prepareUpdate(path);
+		UpdateRequest up = esjc.prepareUpdate(path);
 		up.setDoc(new ArrayMap("bar", "Mars"));
 		up.setDebug(true);
 		up.setRefresh(KRefresh.TRUE);

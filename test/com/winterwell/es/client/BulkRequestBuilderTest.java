@@ -63,8 +63,8 @@ public class BulkRequestBuilderTest extends ESTest {
 		UtilsForESTests.init();
 		ESHttpClient esc = Dep.get(ESHttpClient.class);
 
-		BulkRequestBuilder bulk = esc.prepareBulk();
-		IndexRequestBuilder pi = esc.prepareIndex(INDEX, "simple", "s1");
+		BulkRequest bulk = esc.prepareBulk();
+		IndexRequest pi = esc.prepareIndex(INDEX, "simple", "s1");
 		pi.setBodyMap(new ArrayMap("one", "a"));
 		bulk.add(pi);
 		
@@ -93,9 +93,9 @@ public class BulkRequestBuilderTest extends ESTest {
 		ESHttpClient esc = Dep.get(ESHttpClient.class);
 
 		List<String> ids = new ArrayList();
-		BulkRequestBuilder bulk = esc.prepareBulk();
+		BulkRequest bulk = esc.prepareBulk();
 		for(int i=0; i<100; i++) {
-			IndexRequestBuilder pi = esc.prepareIndex(INDEX, "simple", "s_"+i);			
+			IndexRequest pi = esc.prepareIndex(INDEX, "simple", "s_"+i);			
 			pi.setBodyMap(new ArrayMap("k", ""+i));
 			bulk.add(pi);
 			ids.add("s_"+i);

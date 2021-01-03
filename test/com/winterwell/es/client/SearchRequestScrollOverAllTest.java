@@ -19,7 +19,7 @@ public class SearchRequestScrollOverAllTest extends ESTest {
 		String index = BulkRequestBuilderTest.INDEX;
 		// now search
 		ESHttpClient esc = Dep.get(ESHttpClient.class);
-		SearchRequestBuilder s = esc.prepareSearch(index);
+		SearchRequest s = esc.prepareSearch(index);
 		s.setSize(6);
 		SearchRequestScrollOverAll scroller = new SearchRequestScrollOverAll(esc, s, TUnit.MINUTE.dt);
 		scroller.setSize(10);

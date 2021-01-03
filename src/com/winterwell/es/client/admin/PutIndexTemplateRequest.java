@@ -13,7 +13,7 @@ import com.winterwell.utils.containers.ArrayMap;
  * @author daniel
  *
  */
-public class PutIndexTemplateRequest extends ESHttpRequest<IndicesExistsRequestBuilder,IESResponse> {	
+public class PutIndexTemplateRequest extends ESHttpRequest<IndicesExistsRequest,IESResponse> {	
 	
 	public PutIndexTemplateRequest(ESHttpClient hClient, String templatePattern) {
 		super(hClient, "_template");

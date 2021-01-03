@@ -18,7 +18,7 @@ public class MultiGetRequestBuilderTest extends ESTest  {
 		
 		// now get two
 		ESHttpClient esc = Dep.get(ESHttpClient.class);
-		MultiGetRequestBuilder srb = new MultiGetRequestBuilder(esc).setIndex(brbt.INDEX);
+		MultiGetRequest srb = new MultiGetRequest(esc).setIndex(brbt.INDEX);
 		srb.addDoc(new ESPath(brbt.INDEX, "simple", ids.get(0)));
 		srb.addDoc(new ESPath(brbt.INDEX, "simple", ids.get(1)));
 		srb.setDebug(true);
@@ -35,7 +35,7 @@ public class MultiGetRequestBuilderTest extends ESTest  {
 		
 		// now get two
 		ESHttpClient esc = Dep.get(ESHttpClient.class);
-		MultiGetRequestBuilder srb = new MultiGetRequestBuilder(esc).setIndex(brbt.INDEX);
+		MultiGetRequest srb = new MultiGetRequest(esc).setIndex(brbt.INDEX);
 		srb.addDoc(new ESPath(brbt.INDEX, "simple", "bogus_doofus"));
 		srb.setDebug(true);
 		IESResponse sr = srb.get();

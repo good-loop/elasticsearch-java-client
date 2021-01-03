@@ -7,7 +7,7 @@ import org.junit.Test;
 import com.winterwell.es.ESTest;
 import com.winterwell.es.client.ESHttpClient;
 import com.winterwell.es.client.IESResponse;
-import com.winterwell.es.client.IndexRequestBuilder;
+import com.winterwell.es.client.IndexRequest;
 import com.winterwell.es.client.admin.CreateIndexRequest.Analyzer;
 import com.winterwell.es.fail.ESIndexAlreadyExistsException;
 import com.winterwell.utils.Printer;
@@ -42,7 +42,7 @@ public class CreateIndexRequestTest extends ESTest {
 			CreateIndexRequest cir = esc.admin().indices().prepareCreate(idx).setAlias("foo");
 			cir.get().check();
 			
-			IndexRequestBuilder pi = esc.prepareIndex(idx, "mytype", "id1");
+			IndexRequest pi = esc.prepareIndex(idx, "mytype", "id1");
 			pi.setBodyMap(new ArrayMap("iam", "id1 in "+idx));
 			pi.get().check();			
 		}
@@ -52,12 +52,12 @@ public class CreateIndexRequestTest extends ESTest {
 			CreateIndexRequest cir = esc.admin().indices().prepareCreate(idx).setAlias("foo");
 			cir.get().check();
 			
-			IndexRequestBuilder pi = esc.prepareIndex(idx, "mytype", "id2");
+			IndexRequest pi = esc.prepareIndex(idx, "mytype", "id2");
 			pi.setBodyMap(new ArrayMap("iam", "id2 in "+idx));
 			pi.get().check();
 		}		
 		try {
-			IndexRequestBuilder pi = esc.prepareIndex("foo", "mytype", "id3");
+			IndexRequest pi = esc.prepareIndex("foo", "mytype", "id3");
 			pi.setBodyMap(new ArrayMap("iam", "id3 in foo"));
 			pi.get().check();
 			assert false;

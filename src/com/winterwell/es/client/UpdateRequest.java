@@ -13,12 +13,12 @@ import com.winterwell.utils.time.Dt;
  * Update a document based on a script provided.
  * https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-update.html#_literal_doc_as_upsert_literal
  * 
- * @see UpdateByQueryRequestBuilder
- * @see org.elasticsearch.action.update.UpdateRequestBuilder
+ * @see UpdateByQueryRequest
+ * @see org.UpdateRequest.action.update.UpdateRequestBuilder
  * @author daniel
  * @testedby UpdateRequestBuilderTest
  */
-public class UpdateRequestBuilder extends ESHttpRequest<UpdateRequestBuilder,IESResponse> {
+public class UpdateRequest extends ESHttpRequest<UpdateRequest,IESResponse> {
 
 	private boolean docAsUpsert;
 
@@ -30,7 +30,7 @@ public class UpdateRequestBuilder extends ESHttpRequest<UpdateRequestBuilder,IES
 		if (id==null) throw new IllegalStateException("No id specified for update: "+this);
 	}
 	
-	public UpdateRequestBuilder(ESHttpClient esHttpClient) {
+	public UpdateRequest(ESHttpClient esHttpClient) {
 		super(esHttpClient,"_update");
 		method = "POST";
 		bulkOpName = "update";
@@ -45,7 +45,7 @@ public class UpdateRequestBuilder extends ESHttpRequest<UpdateRequestBuilder,IES
      * <p>
      * Ref: http://www.elasticsearch.org/guide/en/elasticsearch/reference/current/modules-scripting.html
      */
-    public UpdateRequestBuilder setScriptLang(String scriptLang) {
+    public UpdateRequest setScriptLang(String scriptLang) {
     	Map script = script();
     	script.put("lang", scriptLang);
         return this;
@@ -61,7 +61,7 @@ public class UpdateRequestBuilder extends ESHttpRequest<UpdateRequestBuilder,IES
 	}
 
 
-	public UpdateRequestBuilder setDoc(Map doc) {
+	public UpdateRequest setDoc(Map doc) {
 		body().put("doc", doc);
 		return this;
 	}
@@ -70,7 +70,7 @@ public class UpdateRequestBuilder extends ESHttpRequest<UpdateRequestBuilder,IES
 	 * @deprecated Use {@link #setDoc(Map)} or {@link #setScript(String)}
 	 */
 	@Override
-	public UpdateRequestBuilder setBodyJson(String json) {
+	public UpdateRequest setBodyJson(String json) {
 		return super.setBodyJson(json);
 	}
 
@@ -78,7 +78,7 @@ public class UpdateRequestBuilder extends ESHttpRequest<UpdateRequestBuilder,IES
 	 * @deprecated Use {@link #setDoc(Map)} or {@link #setScript(String)}
 	 */
 	@Override
-	public UpdateRequestBuilder setBodyMap(Map msrc) {
+	public UpdateRequest setBodyMap(Map msrc) {
 		// TODO Auto-generated method stub
 		return super.setBodyMap(msrc);
 	}
@@ -88,7 +88,7 @@ public class UpdateRequestBuilder extends ESHttpRequest<UpdateRequestBuilder,IES
 	 * @param b
 	 * @return
 	 */
-	public UpdateRequestBuilder setDocAsUpsert(boolean b) {
+	public UpdateRequest setDocAsUpsert(boolean b) {
 		if (b==docAsUpsert) return this;
 		docAsUpsert = b;
 		body().put("doc_as_upsert", docAsUpsert);		
@@ -112,7 +112,7 @@ public class UpdateRequestBuilder extends ESHttpRequest<UpdateRequestBuilder,IES
 	 * @param optionalResultField
 	 * @return
 	 */
-	public UpdateRequestBuilder setRemovedFields(List<String> removeTheseFields, String optionalResultField) {		
+	public UpdateRequest setRemovedFields(List<String> removeTheseFields, String optionalResultField) {		
 		if (removeTheseFields.isEmpty()) {
 			// Probably a no-op!
 			return this;
@@ -123,7 +123,7 @@ public class UpdateRequestBuilder extends ESHttpRequest<UpdateRequestBuilder,IES
 //				"already = ctx._source.jobid2output[job]; "
 //				+"if (already==empty) { ctx._source."+ESStorage._ESresult+" = false; } "
 //				+"else { ctx._source."+ESStorage._ESresult+" = true; }"		
-		script = FileUtils.read(UpdateRequestBuilder.class.getResourceAsStream("remove_fields.groovy"));
+		script = FileUtils.read(UpdateRequest.class.getResourceAsStream("remove_fields.groovy"));
 		setScript(script);
 		setScriptParams(new ArrayMap("removals", removeTheseFields, "resultField", optionalResultField));
 		// Return what we did
@@ -138,7 +138,7 @@ public class UpdateRequestBuilder extends ESHttpRequest<UpdateRequestBuilder,IES
 	 * ref: https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-update.html#upserts
 	 * @param initialJson
 	 */
-	public UpdateRequestBuilder setUpsert(Map<String, Object> initialJson) {
+	public UpdateRequest setUpsert(Map<String, Object> initialJson) {
 		// jetty JSON is slightly more readable
 //		String _sjson = hClient.gson.toJson(json);
 //		String sjson = JSON.toString(initialJson);
@@ -149,7 +149,7 @@ public class UpdateRequestBuilder extends ESHttpRequest<UpdateRequestBuilder,IES
 		return this;
 	}
 
-	public UpdateRequestBuilder setScript(String script) {
+	public UpdateRequest setScript(String script) {
 		Map s = script();
 		s.put("inline", script);
 		return this;
@@ -164,7 +164,7 @@ public class UpdateRequestBuilder extends ESHttpRequest<UpdateRequestBuilder,IES
 	}
 
 
-	public UpdateRequestBuilder setScriptParams(Map params) {
+	public UpdateRequest setScriptParams(Map params) {
 		script().put("params", params);
 		return this;
 	}

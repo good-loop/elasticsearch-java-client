@@ -17,7 +17,7 @@ public class SearchRequestBuilderTest extends ESTest  {
 		String index = BulkRequestBuilderTest.INDEX;
 		// now search
 		ESHttpClient esc = Dep.get(ESHttpClient.class);
-		SearchRequestBuilder s = esc.prepareSearch(index);
+		SearchRequest s = esc.prepareSearch(index);
 		s.setSize(6);
 		List<Map> hits = s.get().getHits();
 		assert hits.size() == 6 : hits.size();

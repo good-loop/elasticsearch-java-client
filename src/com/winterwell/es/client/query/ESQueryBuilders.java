@@ -191,4 +191,13 @@ public class ESQueryBuilders {
 		return new ESQueryBuilder(qmap);
 	}
 
+	/**
+	 * See https://www.elastic.co/guide/en/elasticsearch/reference/7.9/query-dsl-match-query-phrase.html
+	 * @param phrase
+	 */
+	public static ESQueryBuilder matchPhrase(String phrase) {
+		Map qmap = new ArrayMap("match_phrase", new ArrayMap("message", phrase));
+		return new ESQueryBuilder(qmap);
+	}
+
 }

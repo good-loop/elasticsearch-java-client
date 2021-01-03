@@ -88,7 +88,7 @@ IHasJson
 //		}
 		this.error = ex;
 		// source only?
-		if (req instanceof GetRequestBuilder && ((GetRequestBuilder) req).sourceOnly) {			
+		if (req instanceof GetRequest && ((GetRequest) req).sourceOnly) {			
 			sourceOnly = true;
 		}
 	}
@@ -219,7 +219,7 @@ IHasJson
 	 */
 	public RuntimeException getError() {
 		// HACK! unreliable if deserialising cos req is transient
-		if (req instanceof BulkRequestBuilder && error==null) {
+		if (req instanceof BulkRequest && error==null) {
 			return getBulkErrors();
 		}
 		return error;

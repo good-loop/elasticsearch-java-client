@@ -7,11 +7,11 @@ import com.winterwell.web.WebEx;
  * @author daniel
  *
  */
-public class DeleteRequestBuilder extends ESHttpRequest<DeleteRequestBuilder, IESResponse> {
+public class DeleteRequest extends ESHttpRequest<DeleteRequest, IESResponse> {
 
 	private boolean ignoreE404;
 
-	public DeleteRequestBuilder(ESHttpClient hClient) {
+	public DeleteRequest(ESHttpClient hClient) {
 		super(hClient, null);
 		method = "DELETE";
 		setType("_doc"); // the new ESv7 omni-type

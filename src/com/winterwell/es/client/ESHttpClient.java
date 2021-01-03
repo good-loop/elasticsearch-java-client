@@ -209,7 +209,7 @@ public class ESHttpClient implements Flushable {
 	 * @param id
 	 * @return an IndexRequestBuilder Typical usage: call setSource(), then get()
 	 */
-	public IndexRequestBuilder prepareIndex(String index, String type, String id) {
+	public IndexRequest prepareIndex(String index, String type, String id) {
 		return prepareIndex(new ESPath(index, type, id));
 	}
 	
@@ -219,27 +219,27 @@ public class ESHttpClient implements Flushable {
 	 * @param id
 	 * @return an IndexRequestBuilder Typical usage: call setBodyDoc(), then get()
 	 */
-	public IndexRequestBuilder prepareIndex(String index, String id) {
+	public IndexRequest prepareIndex(String index, String id) {
 		return prepareIndex(new ESPath(index, id));
 	}
 
-	public DeleteRequestBuilder prepareDelete(String esIndex, String esType, String id) {
-		com.winterwell.es.client.DeleteRequestBuilder drb = new DeleteRequestBuilder(this);
+	public DeleteRequest prepareDelete(String esIndex, String esType, String id) {
+		com.winterwell.es.client.DeleteRequest drb = new DeleteRequest(this);
 		drb.setIgnoreError404(true);
 		drb.setIndex(esIndex).setType(esType).setId(id);
 		return drb;
 	}
 	
-	public DeleteRequestBuilder prepareDelete(ESPath path) {
+	public DeleteRequest prepareDelete(ESPath path) {
 		return prepareDelete(path.index(), path.type, path.id);
 	}
 
 	/**
-	 * Convenience for using {@link GetRequestBuilder} to get a document (with no routing)
+	 * Convenience for using {@link GetRequest} to get a document (with no routing)
 	 * @return source-as-map, or null if not found
 	 */
 	public Map<String, Object> get(String index, String type, String id) {
-		GetRequestBuilder gr = new GetRequestBuilder(this);
+		GetRequest gr = new GetRequest(this);
 		gr.setIndex(index).setType(type).setId(id);
 		gr.setSourceOnly(true);
 		GetResponse r = gr.get();
@@ -257,7 +257,7 @@ public class ESHttpClient implements Flushable {
 	}
 
 	public <X> X get(String index, String type, String id, Class<X> class1) {
-		GetRequestBuilder gr = new GetRequestBuilder(this);
+		GetRequest gr = new GetRequest(this);
 		gr.setIndex(index).setType(type).setId(id);
 		gr.setSourceOnly(true);
 		GetResponse r = gr.get();
@@ -278,20 +278,20 @@ public class ESHttpClient implements Flushable {
 	 * @param index
 	 * @return
 	 */
-	public SearchRequestBuilder prepareSearch(String index) {
-		return new SearchRequestBuilder(this).setIndex(index);
+	public SearchRequest prepareSearch(String index) {
+		return new SearchRequest(this).setIndex(index);
 	}
 
-	public BulkRequestBuilder prepareBulk() {
-		return new BulkRequestBuilder(this);
+	public BulkRequest prepareBulk() {
+		return new BulkRequest(this);
 	}
 
-	public SearchScrollRequestBuilder prepareSearchScroll(String scrollId) {
-		return new SearchScrollRequestBuilder(this, scrollId, TUnit.MINUTE.dt);
+	public SearchScrollRequest prepareSearchScroll(String scrollId) {
+		return new SearchScrollRequest(this, scrollId, TUnit.MINUTE.dt);
 	}
 	
-	public ClearScrollRequestBuilder prepareClearScroll() {
-		return new ClearScrollRequestBuilder(this);
+	public ClearScrollRequest prepareClearScroll() {
+		return new ClearScrollRequest(this);
 	}
 
 	public void close() {
@@ -300,14 +300,14 @@ public class ESHttpClient implements Flushable {
 		closed = true;
 	}
 
-	public UpdateRequestBuilder prepareUpdate(ESPath path) {
-		UpdateRequestBuilder urb = new UpdateRequestBuilder(this);
+	public UpdateRequest prepareUpdate(ESPath path) {
+		UpdateRequest urb = new UpdateRequest(this);
 		urb.setPath(path);
 		return urb;
 	}
 
-	public IndexRequestBuilder prepareIndex(ESPath path) {
-		IndexRequestBuilder urb = new IndexRequestBuilder(this);
+	public IndexRequest prepareIndex(ESPath path) {
+		IndexRequest urb = new IndexRequest(this);
 		urb.setPath(path);
 		return urb;
 	}
@@ -320,24 +320,24 @@ public class ESHttpClient implements Flushable {
 		// what can we do to make sure all the CallES have been submitted??
 	}
 	
-	public TransformRequestBuilder prepareTransformPreview() {
-		return new TransformRequestBuilder(this);
+	public TransformRequest prepareTransformPreview() {
+		return new TransformRequest(this);
 	}
 
-	public TransformRequestBuilder prepareTransform(String transform_job) {
-		return new TransformRequestBuilder(this, transform_job, "PUT");
+	public TransformRequest prepareTransform(String transform_job) {
+		return new TransformRequest(this, transform_job, "PUT");
 	}
 	
-	public TransformRequestBuilder prepareTransformStart(String transform_job) {
-		return new TransformRequestBuilder(this, transform_job+"/_start", "POST");
+	public TransformRequest prepareTransformStart(String transform_job) {
+		return new TransformRequest(this, transform_job+"/_start", "POST");
 	}
 	
-	public TransformRequestBuilder prepareTransformStop(String transform_job) {
-		return new TransformRequestBuilder(this, transform_job+"/_stop", "POST");
+	public TransformRequest prepareTransformStop(String transform_job) {
+		return new TransformRequest(this, transform_job+"/_stop", "POST");
 	}
 	
-	public TransformRequestBuilder prepareTransformDelete(String transform_job) {
-		return new TransformRequestBuilder(this, transform_job, "DELETE");
+	public TransformRequest prepareTransformDelete(String transform_job) {
+		return new TransformRequest(this, transform_job, "DELETE");
 	}
 	
 }

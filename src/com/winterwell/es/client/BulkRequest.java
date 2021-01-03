@@ -16,7 +16,7 @@ import com.winterwell.utils.containers.ArrayMap;
  * @author Daniel
  * @testedby  BulkRequestBuilderTest}
  */
-public class BulkRequestBuilder extends ESHttpRequest<BulkRequestBuilder,BulkResponse> {
+public class BulkRequest extends ESHttpRequest<BulkRequest,BulkResponse> {
 
 	/**
 	 * @return true if this is a no-op
@@ -29,14 +29,14 @@ public class BulkRequestBuilder extends ESHttpRequest<BulkRequestBuilder,BulkRes
 	 * @deprecated TODO for large amounts of data, better to stream it out rather than build a big in-memory blob
 	 * @return
 	 */
-	public BulkRequestBuilder openStream() {
+	public BulkRequest openStream() {
 		String sofar = getBodyJson();
 		// chop off the end
 		// open a url stream		
 		return this;
 	}
 	
-	public BulkRequestBuilder closeStream() {
+	public BulkRequest closeStream() {
 		return this;
 	}
 
@@ -45,14 +45,14 @@ public class BulkRequestBuilder extends ESHttpRequest<BulkRequestBuilder,BulkRes
 		return actions;
 	}
 
-	public BulkRequestBuilder(ESHttpClient hClient) {
+	public BulkRequest(ESHttpClient hClient) {
 		super(hClient, "_bulk");
 		method = "POST";
 	}
 
 	List<ESHttpRequest> actions = new ArrayList();
 	
-	public BulkRequestBuilder add(ESHttpRequest request) {
+	public BulkRequest add(ESHttpRequest request) {
 		actions.add(request);		
 		if (request.indices==null) {
 			throw new IllegalArgumentException("No index set for "+request);

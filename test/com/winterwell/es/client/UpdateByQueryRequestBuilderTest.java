@@ -27,7 +27,7 @@ public class UpdateByQueryRequestBuilderTest extends ESTest {
 		
 		// now index 2 items
 		{
-			IndexRequestBuilder irb = esjc.prepareIndex(idx, "test_id_1");
+			IndexRequest irb = esjc.prepareIndex(idx, "test_id_1");
 			irb.setBodyDoc(new ArrayMap(
 				"foo", "hello 1",
 				"bar", "world"
@@ -37,7 +37,7 @@ public class UpdateByQueryRequestBuilderTest extends ESTest {
 			IESResponse resp2 = irb.get().check();
 		}
 		{
-			IndexRequestBuilder irb = esjc.prepareIndex(idx, "test_id_2");
+			IndexRequest irb = esjc.prepareIndex(idx, "test_id_2");
 			irb.setBodyDoc(new ArrayMap(
 				"foo", "hello 2"
 			));
@@ -48,7 +48,7 @@ public class UpdateByQueryRequestBuilderTest extends ESTest {
 		Utils.sleep(100);
 		
 		// and update the unset bar		
-		UpdateByQueryRequestBuilder up = new UpdateByQueryRequestBuilder(esjc);
+		UpdateByQueryRequest up = new UpdateByQueryRequest(esjc);
 		up.setIndex(idx);
 		up.debug = true;		
 		ESQueryBuilder qb = ESQueryBuilders.boolQuery().mustNot(ESQueryBuilders.existsQuery("bar"));

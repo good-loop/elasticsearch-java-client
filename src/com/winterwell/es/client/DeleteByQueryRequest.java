@@ -2,14 +2,14 @@ package com.winterwell.es.client;
 
 
 /**
- * @see org.elasticsearch.action.deletebyquery.DeleteByQueryRequestBuilder
+ * @see org.DeleteByQueryRequest.action.deletebyquery.DeleteByQueryRequestBuilder
  * @author daniel
  *
  */
-public class DeleteByQueryRequestBuilder extends ESHttpRequest<DeleteByQueryRequestBuilder,IESResponse> {
+public class DeleteByQueryRequest extends ESHttpRequest<DeleteByQueryRequest,IESResponse> {
 
 
-	public DeleteByQueryRequestBuilder(ESHttpClient hClient, String index) {
+	public DeleteByQueryRequest(ESHttpClient hClient, String index) {
 		super(hClient, "_query");
 		method = "DELETE";
 		setIndex(index);
@@ -19,13 +19,13 @@ public class DeleteByQueryRequestBuilder extends ESHttpRequest<DeleteByQueryRequ
      * The document types to execute the search against. Defaults to be executed against
      * all types.
      */
-	public DeleteByQueryRequestBuilder setTypes(String... types) {
+	public DeleteByQueryRequest setTypes(String... types) {
 		assert types.length==1 : "TODO";
 		setType(types[0]);
 		return this;
 	}
 
-	public DeleteByQueryRequestBuilder setFrom(int i) {
+	public DeleteByQueryRequest setFrom(int i) {
 		params.put("from", i);
 		return this;
 	}
