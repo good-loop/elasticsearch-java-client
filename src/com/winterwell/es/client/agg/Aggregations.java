@@ -61,6 +61,16 @@ public class Aggregations {
 	}
 
 	/**
+	 * https://www.elastic.co/guide/en/elasticsearch/reference/7.9/search-aggregations-metrics-sum-aggregation.html
+	 * @param name
+	 * @param field This MUST be numeric
+	 * @return
+	 */
+	public static Aggregation sum(String name, String field) {
+		return new Aggregation(name, "sum", field);
+	}
+	
+	/**
 	 * document count by field=value,
 	 * If you want to sum a numerical value from the documents, use this with a stats() subAggregation
 	 * @param name Your name for this aggregation
