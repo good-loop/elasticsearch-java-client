@@ -331,7 +331,7 @@ IHasJson
 	@Override
 	public long getTotal() throws IllegalArgumentException {
 		if ( ! isSuccess()) throw error;
-		Map<String, Object> map = getParsedJson();
+		Map<String, Object> map = getJsonMap();
 		Map hits = (Map) map.get("hits");
 		if (hits == null){
 			throw new IllegalArgumentException("hits field cannot be null");

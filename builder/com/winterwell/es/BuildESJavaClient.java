@@ -13,6 +13,7 @@ public class BuildESJavaClient extends BuildWinterwellProject {
 	public BuildESJavaClient() {
 		super("elasticsearch-java-client");
 		setIncSrc(true);
+		setVersion("1.0.0-ES7");  // 3 Feb 2021
 	}
 
 	@Override
