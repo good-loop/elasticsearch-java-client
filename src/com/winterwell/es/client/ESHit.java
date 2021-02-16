@@ -76,6 +76,14 @@ public final class ESHit<T> implements IHasJson {
 	}
 	
 	/**
+	 * @deprecated prefer {@link #getJThing()}
+	 * @return
+	 */
+	public Map getSource() {
+		return _source;
+	}
+	
+	/**
 	 * This recreates the ES json format
 	 */
 	@Override
