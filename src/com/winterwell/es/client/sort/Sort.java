@@ -43,7 +43,7 @@ public class Sort implements IHasJson {
 	
 	KSortOrder order = KSortOrder.asc;
 
-	private String missing;
+	private Object missing;
 	
 	public Sort setField(String field) {
 		this.field = field;
@@ -73,11 +73,11 @@ public class Sort implements IHasJson {
 
 	/**
 	 * How to handle sort over missing values?
-	 * https://www.elastic.co/guide/en/elasticsearch/reference/6.4/search-request-sort.html#_missing_values
+	 * https://www.elastic.co/guide/en/elasticsearch/reference/current/sort-search-results.html#_missing_values
 	 * @param _last_first_or_customValue Note: "_last" is the default
 	 * @return this
 	 */
-	public Sort setMissing(String _last_first_or_customValue) {
+	public Sort setMissing(Object _last_first_or_customValue) {
 		this.missing = _last_first_or_customValue;
 		return this;
 	}
