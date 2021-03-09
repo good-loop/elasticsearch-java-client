@@ -21,7 +21,7 @@ public class BuildESJavaClient extends BuildWinterwellProject {
 		List<BuildTask> deps = new ArrayList(super.getDependencies());
 				
 		MavenDependencyTask mdt = new MavenDependencyTask();
-		mdt.addDependency("com.google.guava", "guava", "28.2-jre");
+		mdt.addDependency("com.google.guava", "guava", "30.1-jre");
 		mdt.setIncSrc(true);		
 		deps.add(mdt);
 
