@@ -165,7 +165,10 @@ IHasJson
 		if (req==null || req.hClient==null) {
 			// A deserialised response (hence with no request).
 			// ...fallback to Dep for Gson
-			return Dep.get(Gson.class);
+			if (Dep.has(Gson.class)) {
+				return Dep.get(Gson.class);
+			}
+			return new Gson(); // fallback to default
 		}
 		return req.hClient.config.getGson();				
 	}
