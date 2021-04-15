@@ -126,8 +126,15 @@ public class SearchRequest extends ESHttpRequest<SearchRequest,SearchResponse> {
 		return this;
 	}
 	
-	public SearchRequest setFrom(int i) {
-		params.put("from", i);
+	/**
+	 * See https://www.elastic.co/guide/en/elasticsearch/reference/7.9/paginate-search-results.html
+	 * @param from Page through to this result as the 1st result. 
+	 * Warning: under normal settings, size + from must be under 10,000.
+	 * Use `search_after` or `scroll` for larger data sets.
+	 * @return
+	 */
+	public SearchRequest setFrom(int from) {
+		params.put("from", from);
 		return this;
 	}
 	/**

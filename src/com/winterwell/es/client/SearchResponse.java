@@ -10,7 +10,11 @@ public interface SearchResponse extends IESResponse {
 
 	/**
 	 * @return List of hits, which are wrapper objects around a _source document.
+	 * Uses {@link #getParsedJson()} which runs results through gson. So usually each hit wraps a POJO.
+	 * 
 	 * @throws WebEx if the search failed.
+	 * 
+	 * @see #getSearchResults() getSearchResults unwraps the hits but does not convert them.
 	 */
 	List<Map> getHits();
 
