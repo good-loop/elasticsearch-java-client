@@ -12,6 +12,7 @@ import com.winterwell.es.client.suggest.Suggester;
 import com.winterwell.es.fail.ESDocNotFoundException;
 import com.winterwell.es.fail.ESException;
 import com.winterwell.es.fail.ESIndexAlreadyExistsException;
+import com.winterwell.es.fail.ESIndexNotFoundException;
 import com.winterwell.es.fail.ESIndexReadOnlyException;
 import com.winterwell.es.fail.ESMapperParsingException;
 import com.winterwell.es.fail.IElasticException;
@@ -489,6 +490,10 @@ public class ESHttpRequest<SubClass extends ESHttpRequest, ResponseSubClass exte
 		if (ex instanceof IElasticException) return (RuntimeException) ex;
 		if (ex instanceof ESException) return (RuntimeException) ex;
 		if (ex instanceof WebEx.E404) {
+			String msg = ex.getMessage();
+			if (msg != null && msg.contains("index_not_found_exception")) {
+				return new ESIndexNotFoundException(getESPath());	
+			}
 			// e.g. a get for an unstored object (a common case)
 			return new ESDocNotFoundException(getESPath());
 		}
