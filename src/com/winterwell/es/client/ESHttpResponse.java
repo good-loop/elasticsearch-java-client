@@ -37,6 +37,9 @@ IHasJson
 	
 	private final String json;
 	private final RuntimeException error;
+	/**
+	 * Allow for null
+	 */
 	private final transient ESHttpRequest req;
 	private Map parsed;
 	private boolean sourceOnly;
