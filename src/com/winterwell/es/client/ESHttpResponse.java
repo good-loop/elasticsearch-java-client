@@ -345,7 +345,7 @@ IHasJson
 		// c.f. https://www.elastic.co/guide/en/elasticsearch/reference/7.x/search-request-track-total-hits.html
 		Object hitTotal = hits.get("total");
 		if (hitTotal == null){
-			throw new IllegalArgumentException("hitTotal field cannot be null");
+			throw new IllegalArgumentException("hitTotal field cannot be null "+hits);
 		}
 		// ESv6
 		if (hitTotal instanceof Number) {
