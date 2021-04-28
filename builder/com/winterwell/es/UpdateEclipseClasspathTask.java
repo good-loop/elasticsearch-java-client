@@ -57,7 +57,7 @@ public class UpdateEclipseClasspathTask extends BuildTask {
 		}
 		// xml surgery
 		String ec = FileUtils.read(eclipseClasspath.getFile());
-		Tree<XMLNode> ecTree = WebUtils.parseXmlToTree(ec);
+		Tree<XMLNode> ecTree = new Tree(); // FIXME WebUtils.parseXmlToTree(ec);
 		Document ecDoc = WebUtils.parseXml(ec);
 		//<classpathentry kind="lib" path="dependencies/checker-qual.jar"/>
 		List<Node> nodes = WebUtils.xpathQuery2("//classpathentry[path=\"dependencies/checker-qual.jar\"]", ecDoc, false);
