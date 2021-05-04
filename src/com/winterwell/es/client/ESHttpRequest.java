@@ -392,7 +392,7 @@ public class ESHttpRequest<SubClass extends ESHttpRequest, ResponseSubClass exte
 				// DEBUG hack
 				// NB: pretty=true was doc-as-upsert
 				if (debug || esjc.debug) {
-					curl = "curl -X"+(method==null?"POST":method)+" '"+url+"' -d '"+srcJson+"'";
+					curl = "curl -X"+(method==null?"POST":method)+" '"+url+"' -d '"+srcJson+"' -H 'Content-Type: application/json'";
 					curlout(curl);
 				}
 				
