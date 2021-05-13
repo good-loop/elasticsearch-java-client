@@ -15,6 +15,7 @@ import com.winterwell.utils.Utils;
 import com.winterwell.utils.containers.ArrayMap;
 import com.winterwell.utils.web.JsonPatchOp;
 import com.winterwell.utils.web.SimpleJson;
+import com.winterwell.utils.web.WebUtils2;
 
 public class PainlessScriptBuilderTest extends ESTest  {
 
@@ -179,7 +180,7 @@ public class PainlessScriptBuilderTest extends ESTest  {
 		esjc.prepareDelete(path).setRefresh(KRefresh.TRUE).get();
 		
 		String b4 = "{'a':{'b':{'c':3}},'x':24}".replace('\'','"');
-		Object before = JSON.parse(b4);
+		Object before = WebUtils2.parseJSON(b4);
 		esjc.prepareIndex(path).setBodyDoc(before)
 			.setDebug(true)
 			.setRefresh(KRefresh.TRUE)

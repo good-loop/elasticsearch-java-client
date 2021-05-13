@@ -141,7 +141,7 @@ public class UpdateRequest extends ESHttpRequest<UpdateRequest,IESResponse> {
 	public UpdateRequest setUpsert(Map<String, Object> initialJson) {
 		// jetty JSON is slightly more readable
 //		String _sjson = hClient.gson.toJson(json);
-//		String sjson = JSON.toString(initialJson);
+//		String sjson = WebUtils2.generateJSON(initialJson);
 		body().put("upsert", initialJson); //sjson);
 		if (docAsUpsert) {
 			throw new IllegalStateException("doc-as-upsert does not go with upsert + script");

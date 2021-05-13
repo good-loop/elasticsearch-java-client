@@ -347,7 +347,7 @@ public class ESHttpRequest<SubClass extends ESHttpRequest, ResponseSubClass exte
 		bodyJson = gson.toJson(body); 
 //				TODO gson().toJson(body);
 		// sanity check the json				
-//		assert JSON.parse(srcJson) != null : srcJson;
+//		assert WebUtils2.parseJSON(srcJson) != null : srcJson;
 		return bodyJson;
 	}
 
@@ -396,7 +396,7 @@ public class ESHttpRequest<SubClass extends ESHttpRequest, ResponseSubClass exte
 					curlout(curl);
 				}
 				
-				assert JSON.parse(srcJson) != null : srcJson;
+				assert WebUtils2.parseJSON(srcJson) != null : srcJson;
 				
 				jsonResult = fb.post(url.toString(), "application/json", srcJson);
 								
