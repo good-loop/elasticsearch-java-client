@@ -35,7 +35,7 @@ public class SearchRequest extends ESHttpRequest<SearchRequest,SearchResponse> {
 	 * @return 
 	 */
 	public SearchRequest setResultsSourceExclude(String... excluded) {
-		params.put("_source_exclude", StrUtils.join(excluded, ","));
+		params.put("_source_excludes", StrUtils.join(excluded, ","));
 		return this;
 	}
 	/**

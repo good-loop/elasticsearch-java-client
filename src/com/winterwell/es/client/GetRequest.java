@@ -23,7 +23,7 @@ public class GetRequest extends ESHttpRequest<GetRequest,GetResponse> {
 	 * @return 
 	 */
 	public GetRequest setResultsSourceExclude(String... excluded) {
-		params.put("_source_exclude", StrUtils.join(excluded, ","));
+		params.put("_source_excludes", StrUtils.join(excluded, ","));
 		return this;
 	}
 	/**
