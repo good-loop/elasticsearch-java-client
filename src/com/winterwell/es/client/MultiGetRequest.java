@@ -67,7 +67,7 @@ public class MultiGetRequest extends ESHttpRequest<MultiGetRequest, IESResponse>
 	 * @return 
 	 */
 	public MultiGetRequest setResultsSourceExclude(String... excluded) {
-		params.put("_source_exclude", StrUtils.join(excluded, ","));
+		params.put("_source_excludes", StrUtils.join(excluded, ","));
 		return this;
 	}
 	/**
