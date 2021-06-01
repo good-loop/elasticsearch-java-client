@@ -38,6 +38,7 @@ public class SearchRequest extends ESHttpRequest<SearchRequest,SearchResponse> {
 	public SearchRequest setResultsSourceExclude(String... excluded) {
 		Map _source = (Map) body().computeIfAbsent("_source", ArrayMap::new);
 		_source.put("excludes", excluded);
+//		params.put("_source_excludes", StrUtils.join(excluded, ","));
 		return this;
 	}
 	
