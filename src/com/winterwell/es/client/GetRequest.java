@@ -14,25 +14,26 @@ public class GetRequest extends ESHttpRequest<GetRequest,GetResponse> {
 	public GetRequest(ESHttpClient hClient) {
 		super(hClient, null);
 		setType("_doc"); // the new ESv7 omni-type
-	}
-
+	}		
+	
 
 	/**
 	 * @param excluded Can use wildcards, e.g. "*.bloat"
-	 * See http://www.elasticsearch.org/guide/en/elasticsearch/reference/current/docs-get.html#get-source-filtering
-	 * @return 
+	 * See 
+	 * https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-get.html#get-source-filtering
 	 */
 	public GetRequest setResultsSourceExclude(String... excluded) {
-		params.put("_source_exclude", StrUtils.join(excluded, ","));
+		params.put("_source_excludes", StrUtils.join(excluded, ","));
 		return this;
 	}
+	
 	/**
 	 * @param included Can use wildcards, e.g. "*.bloat"
 	 * See http://www.elasticsearch.org/guide/en/elasticsearch/reference/current/docs-get.html#get-source-filtering
 	 * @return 
 	 */
 	public GetRequest setResultsSourceInclude(String... included) {
-		params.put("_source_include", StrUtils.join(included, ","));
+		params.put("_source_includes", StrUtils.join(included, ","));
 		return this;
 	}
 
