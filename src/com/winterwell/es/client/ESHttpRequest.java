@@ -42,7 +42,7 @@ public class ESHttpRequest<SubClass extends ESHttpRequest, ResponseSubClass exte
 		KRefresh kr = KRefresh.valueOf(refresh.toUpperCase());
 		setRefresh(kr);
 		return (SubClass) this;
-	}
+	}		
 	
 	public final SubClass setRefresh(KRefresh refresh) {
 		params.put("refresh", refresh.toString().toLowerCase());
@@ -61,6 +61,8 @@ public class ESHttpRequest<SubClass extends ESHttpRequest, ResponseSubClass exte
 		}
 		params.put("fields", fieldsAsCSL);	return (SubClass) this;
 	}
+	
+
 	
 	/**
 	 * Set as much of path as is set.

@@ -28,23 +28,28 @@ import com.winterwell.utils.time.TUnit;
  */
 public class SearchRequest extends ESHttpRequest<SearchRequest,SearchResponse> {
 
-
+ 
 	/**
 	 * @param excluded Can use wildcards, e.g. "*.bloat"
-	 * See http://www.elasticsearch.org/guide/en/elasticsearch/reference/current/docs-get.html#get-source-filtering
+	 * See 
+	 * https://www.elastic.co/guide/en/elasticsearch/reference/current/search-fields.html#source-filtering
 	 * @return 
 	 */
 	public SearchRequest setResultsSourceExclude(String... excluded) {
-		params.put("_source_excludes", StrUtils.join(excluded, ","));
+		Map _source = (Map) body().computeIfAbsent("_source", ArrayMap::new);
+		_source.put("excludes", excluded);
+//		params.put("_source_excludes", StrUtils.join(excluded, ","));
 		return this;
 	}
+	
 	/**
 	 * @param included Can use wildcards, e.g. "*.bloat"
-	 * See http://www.elasticsearch.org/guide/en/elasticsearch/reference/current/docs-get.html#get-source-filtering
+	 * 	 * https://www.elastic.co/guide/en/elasticsearch/reference/current/search-fields.html#source-filtering
 	 * @return 
 	 */
 	public SearchRequest setResultsSourceInclude(String... included) {
-		params.put("_source_include", StrUtils.join(included, ","));
+		Map _source = (Map) body().computeIfAbsent("_source", ArrayMap::new);
+		_source.put("includes", included);
 		return this;
 	}
 

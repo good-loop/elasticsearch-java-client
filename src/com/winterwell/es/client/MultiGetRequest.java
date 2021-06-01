@@ -76,7 +76,7 @@ public class MultiGetRequest extends ESHttpRequest<MultiGetRequest, IESResponse>
 	 * @return 
 	 */
 	public MultiGetRequest setResultsSourceInclude(String... included) {
-		params.put("_source_include", StrUtils.join(included, ","));
+		params.put("_source_includes", StrUtils.join(included, ","));
 		return this;
 	}
 

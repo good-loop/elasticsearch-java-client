@@ -84,6 +84,30 @@ public class GetRequestBuilderTest extends ESTest {
 	}
 
 
+	
+	@Test
+	public void testExcludes() {
+		BulkRequestBuilderTest brbt = new BulkRequestBuilderTest();
+		List<String> ids = brbt.testBulkIndexMany2();
+		
+		// now get one
+		ESHttpClient esc = Dep.get(ESHttpClient.class);
+		GetRequest srb = new GetRequest(esc).setIndex(brbt.INDEX).setId(ids.get(0));
+		srb.setResultsSourceExclude("k");
+		srb.setDebug(true);
+		GetResponse sr = srb.get();
+		sr.check();		
+
+		Map<String, Object> obj = sr.getSourceAsMap();
+		assert ! obj.containsKey("k");
+		
+		Map<String, Object> got2 = esc.get(brbt.INDEX, null, ids.get(0));
+		assert got2.containsKey("k") : got2;
+		
+	}
+
+
+
 	@Test
 	public void testGet404() {
 		try {
