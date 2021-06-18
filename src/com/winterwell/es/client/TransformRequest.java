@@ -1,13 +1,15 @@
 package com.winterwell.es.client;
 
 import java.util.List;
+import java.util.Map;
 
+import com.winterwell.es.client.query.ESQueryBuilder;
 import com.winterwell.utils.Utils;
 import com.winterwell.utils.containers.ArrayMap;
 
 /**
  * Transform indices to merge fields.
- * See https://www.elastic.co/guide/en/elasticsearch/reference/7.9/transforms.html
+ * See https://www.elastic.co/guide/en/elasticsearch/reference/current/transforms.html
  * @testedby TransformRequestBuilderTest
  */
 public class TransformRequest extends ESHttpRequest<TransformRequest, IESResponse> {
@@ -72,6 +74,16 @@ public class TransformRequest extends ESHttpRequest<TransformRequest, IESRespons
 					)
 			));
 		return this;
+	}
+
+	/**
+	 * Use this to filter the source, before transforming.
+	 * @param query
+	 */
+	public void addQuery(ESQueryBuilder query) {
+		assert body != null && body.containsKey("source") : "setBody first";
+		Map source = (Map) body.get("source");
+		source.put("query", query.toJson2());
 	}
 	
 	// Similar to setBody function, but with painless script support in case for ES version < 7.10.0
