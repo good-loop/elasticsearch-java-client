@@ -76,7 +76,29 @@ public class ESQueryBuilders {
 		Map must = new ArrayMap("term", new ArrayMap(field, value));
 		return new ESQueryBuilder(must);
 	}
-	
+
+	/**
+	 * Find exact term matches.
+	 *
+	 * Note: When querying full text fields, use the match query instead, which understands how the field has been analyzed.
+	 *
+	 * https://www.elastic.co/guide/en/elasticsearch/reference/6.2/query-dsl-term-query.html
+	 * @param field
+	 * @param value
+	 * @param boost - Floating point number used to decrease or increase the relevance scores of a query. You can use the
+	 *  boost parameter to adjust relevance scores for searches containing two or more queries. Boost values are relative to
+	 *  the default value of 1.0. A boost value between 0 and 1.0 decreases the relevance score. A value greater than 1.0
+	 *  increases the relevance score.
+	 * @return
+	 */
+	public static ESQueryBuilder termQuery(String field, Object value, Object boost) {
+		Map termValue = new ArrayMap(field, new ArrayMap(
+				"value", value,
+				"boost", boost));
+		Map must = new ArrayMap("term", termValue);
+		return new ESQueryBuilder(must);
+	}
+
 	/**
 	 * match or multi_match with * all fields
 	 * https://www.elastic.co/guide/en/elasticsearch/reference/6.2/query-dsl-match-query.html
