@@ -16,3 +16,4 @@ dependencies
 tmp-data
 pom.bob.xml
 boblog
+config/version.properties
