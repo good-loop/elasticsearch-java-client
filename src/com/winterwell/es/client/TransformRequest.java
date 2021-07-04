@@ -80,8 +80,8 @@ public class TransformRequest extends ESHttpRequest<TransformRequest, IESRespons
 	 * Use this to filter the source, before transforming.
 	 * @param query
 	 */
-	public void addQuery(ESQueryBuilder query) {
-		assert body != null && body.containsKey("source") : "setBody first";
+	public void setQuery(ESQueryBuilder query) {
+		assert body != null && body.containsKey("source") : "call setBody() first";
 		Map source = (Map) body.get("source");
 		source.put("query", query.toJson2());
 	}

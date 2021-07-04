@@ -3,6 +3,7 @@ package com.winterwell.es.client.query;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Pattern;
 
 import com.winterwell.utils.MathUtils;
 import com.winterwell.utils.containers.ArrayMap;
@@ -231,4 +232,43 @@ public class ESQueryBuilders {
 		return new ESQueryBuilder(qmap);
 	}
 
+	/**
+	 * See
+	 * https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-regexp-query.html
+	 * @param regex 
+	 * @return
+	 */
+	public static ESQueryBuilder regexp(String field, String regex) {
+//		e.g. "regexp": {
+//		      "user.id": {
+//		        "value": "k.*y",
+//		      }
+//		    }
+		Map qmap = new ArrayMap("regexp", new ArrayMap(field, new ArrayMap(
+			"value", regex
+		)));
+		return new ESQueryBuilder(qmap);
+	}
+
+	/**
+	 * See
+	 * https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-regexp-query.html
+	 * @param regex
+	 * @return
+	 */
+	public static ESQueryBuilder regexp(String field, Pattern regex) {
+//		e.g. "regexp": {
+//		      "user.id": {
+//		        "value": "k.*y",
+//		        "flags": "ALL",
+//		        "case_insensitive": true,
+//		      }
+//		    }
+		int ci = regex.flags() & Pattern.CASE_INSENSITIVE;
+		Map qmap = new ArrayMap("regexp", new ArrayMap(field, new ArrayMap(
+			"value", regex.pattern(),
+			"case_insensitive", ci
+		)));
+		return new ESQueryBuilder(qmap);
+	}
 }
