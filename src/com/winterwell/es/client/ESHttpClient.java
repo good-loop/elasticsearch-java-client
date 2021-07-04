@@ -106,6 +106,9 @@ public class ESHttpClient implements Flushable {
 		this.servers = Collections.singletonList(server);
 	}
 	
+	/**
+	 * @warning This relies on Dep.get(ESConfig.class) 
+	 */
 	public ESHttpClient() {
 		this(Dep.get(ESConfig.class));
 	}
