@@ -7,6 +7,7 @@ import java.util.Map;
 import com.winterwell.utils.MathUtils;
 import com.winterwell.utils.containers.ArrayMap;
 import com.winterwell.utils.containers.Containers;
+import com.winterwell.utils.log.Log;
 import com.winterwell.utils.time.Time;
 import com.winterwell.utils.time.TimeUtils;
 
@@ -67,16 +68,46 @@ public class ESQueryBuilders {
 	 * 
 	 * Note: When querying full text fields, use the match query instead, which understands how the field has been analyzed.
 	 * 
-	 * https://www.elastic.co/guide/en/elasticsearch/reference/6.2/query-dsl-term-query.html
+	 * https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-term-query.html
 	 * @param field
 	 * @param value
 	 * @return
 	 */
 	public static ESQueryBuilder termQuery(String field, Object value) {
-		Map must = new ArrayMap("term", new ArrayMap(field, value));
+		return termQuery(field, value, null);
+	}
+
+	/**
+	 * Find exact term matches.
+	 *
+	 * Note: When querying full text fields, use the match query instead, which understands how the field has been analyzed.
+	 *
+	 * https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-term-query.html
+	 * @param field
+	 * @param value
+	 * @param boost - Optional. (0,infinity) Floating point number used to decrease or increase the relevance scores of a query. You can use the
+	 *  boost parameter to adjust relevance scores for searches containing two or more queries. Boost values are relative to
+	 *  the default value of 1.0. A boost value between 0 and 1.0 decreases the relevance score. A value greater than 1.0
+	 *  increases the relevance score.
+	 * @return
+	 */
+	public static ESQueryBuilder termQuery(String field, Object value, Double boost) {
+		Map termValue;
+		if (boost==null) {
+			termValue = new ArrayMap(field, value);
+		} else {
+			if (boost <= 0) { // Should we throw an exception? No, it's not actually an error (though it suggests an error elsewhere) 
+				Log.e("ES", "termQuery Boost "+boost+" makes clause meaningless: "+field+"="+value);
+			}
+			termValue = new ArrayMap(field, new ArrayMap(
+				"value", value,
+				"boost", boost
+			));			
+		}		
+		Map must = new ArrayMap("term", termValue);
 		return new ESQueryBuilder(must);
 	}
-	
+
 	/**
 	 * match or multi_match with * all fields
 	 * https://www.elastic.co/guide/en/elasticsearch/reference/6.2/query-dsl-match-query.html

@@ -86,7 +86,7 @@ public class TransformRequest extends ESHttpRequest<TransformRequest, IESRespons
 		source.put("query", query.toJson2());
 	}
 	
-	// Similar to setBody function, but with painless script support in case for ES version < 7.10.0
+	/** Similar to setBody function, but with painless script support in case for ES version < 7.10.0 */
 	public TransformRequest setBodyWithPainless(String srcIndex, String destIndex, List<String> aggs, List<String> terms, String interval) {		
 		ArrayMap aggregations = new ArrayMap("count", new ArrayMap("sum", new ArrayMap("field", "count")));
 		for (String agg : aggs) {
