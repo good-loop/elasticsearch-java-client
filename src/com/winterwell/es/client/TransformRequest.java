@@ -2,6 +2,7 @@ package com.winterwell.es.client;
 
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Pattern;
 
 import com.winterwell.es.client.query.ESQueryBuilder;
 import com.winterwell.utils.Utils;
@@ -25,14 +26,16 @@ public class TransformRequest extends ESHttpRequest<TransformRequest, IESRespons
 	 * 
 	 * @param transform_job id + /_start or /_stop if relevant
 	 * This identifier can contain lowercase alphanumeric characters (a-z and 0-9), 
-	 * hyphens, and underscores. It must start and end with alphanumeric characters
+	 * hyphens, and underscores. It must start and end with alphanumeric characters.
+	 * Max 64 characters
+	 *
 	 * */
 	public TransformRequest(ESHttpClient esHttpClient, String transform_job, String request) {
 		super(esHttpClient, "_transform/"+transform_job);
-//		// Check job name conforms
-//		if ( ! Pattern.matches("[a-z0-9][a-z0-9_\\-]*", transform_job)) {
-//			throw new IllegalArgumentException(transform_job);
-//		}			
+		// Check job name conforms
+		if ( transform_job.length() > 64 || ! Pattern.matches("[a-z0-9][a-z0-9_\\-]*", transform_job)) {
+			throw new IllegalArgumentException(transform_job);
+		}			
 		setIndex(null); 
 		method = request; 
 	}
